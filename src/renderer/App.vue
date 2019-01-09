@@ -41,6 +41,10 @@
                   <span class="icon is-small"><i><fa icon="sync-alt"></fa></i></span>
                   <span v-on:click="">Refresh</span>
                 </router-link>
+                <router-link to="#">
+                  <span class="icon is-small"><i><fa icon="external-link-square-alt"></fa></i></span>
+                  <span v-on:click="">Go to Toggl</span>
+                </router-link>
               </p>
             </template>
 

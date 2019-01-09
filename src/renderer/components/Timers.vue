@@ -42,6 +42,7 @@
           </thead>
           <tbody>
           <tr>
+            <!-- When we do the for each here, make the ticket nr clickable? -->
             <td>OSSUPPORT-1928</td>
             <td>This is a description</td>
             <td>00:15:00</td>
