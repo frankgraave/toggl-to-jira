@@ -77,7 +77,7 @@
 
         </div> <!-- End of first column -->
 
-        <template v-if="(jiraAuthType === 'Basic Auth' && jiraName === '' && jiraPass === '') || (jiraAuthType === 'API Key' && atlassianApiKey === '')">
+        <template v-if="togglApiKey === '' && (jiraName === '' && jiraPass === '' || atlassianApiKey === '')">
           <div class="column is-6">
             <article class="message is-dark is-small">
               <div class="message-header">Note</div>
@@ -105,7 +105,7 @@
         jiraName: store.get('jira-name'),
         jiraPass: store.get('jira-pass'),
         atlassianApiKey: store.get('atlassian-api-key'),
-        jiraAuthType: ''
+        jiraAuthType: store.get('jira-auth-type') ? store.get('jira-auth-type') : 'Basic Auth'
       }
     },
     methods: {
@@ -126,6 +126,18 @@
           document.getElementById('saveAccountData').classList.remove('is-loading')
           document.getElementById('saveAccountData').classList.remove('is-warning')
         }, 500)
+      },
+      clearInputs () {
+        // When we delete credentials, update it visually.
+        let inputs = document.getElementsByClassName('input')
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].value = ''
+        }
+      }
+    },
+    watch: {
+      jiraAuthType (value) {
+        store.set('jira-auth-type', value)
       }
     },
     mounted () {
@@ -135,18 +147,11 @@
       this.$electron.ipcRenderer.on('clearCredentials', () => {
         document.getElementById('saveAccountData').setAttribute('disabled', true)
         // Only delete these, since we have other settings.
-        store.delete('toggl-api-key')
-        store.delete('jira-name')
-        store.delete('jira-pass')
-        store.delete('atlassian-api-key')
-        // Update it visually
-        this.$refs.togglApiKey.value = ''
-        if (this.jiraAuthType === 'Basic Auth') {
-          this.$refs.jiraName.value = ''
-          this.$refs.jiraPass.value = ''
-        } else if (this.jiraAuthType === 'API Key') {
-          this.$refs.atlassianApiKey.value = ''
-        }
+        store.set('toggl-api-key', '')
+        store.set('jira-name', '')
+        store.set('jira-pass', '')
+        store.set('atlassian-api-key', '')
+        this.clearInputs()
         document.getElementById('saveAccountData').removeAttribute('disabled')
       })
     }
