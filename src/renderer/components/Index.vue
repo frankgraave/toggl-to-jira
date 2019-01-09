@@ -10,7 +10,7 @@
           <div class="field">
             <label class="label">Toggl API Key</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input" type="password" ref="togglApiKey" v-model="togglApiKey" placeholder="Toggl API Key">
+              <input class="input" type="text" ref="togglApiKey" v-model="togglApiKey" placeholder="Toggl API Key">
               <span class="icon is-small is-left">
                 <fa :icon="['fas', 'power-off']" />
               </span>
@@ -41,7 +41,7 @@
               <div class="control has-icons-left has-icons-right">
                 <input class="input" type="text" ref="jiraName" v-model="jiraName" placeholder="Jira username">
                 <span class="icon is-small is-left">
-                  <fa :icon="['fas', 'clock']" />
+                  <fa :icon="['fab', 'jira']" />
                 </span>
               </div>
             </div>
@@ -59,9 +59,9 @@
 
           <template v-else>
             <div class="field">
-              <label class="label">Jira API Key</label>
+              <label class="label">Atlassian API Key</label>
               <div class="control has-icons-left has-icons-right">
-                <input class="input" type="password" ref="jiraApiKey" v-model="jiraApiKey" placeholder="Jira API Key">
+                <input class="input" type="text" ref="atlassianApiKey" v-model="atlassianApiKey" placeholder="Atlassian ID API Key">
                 <span class="icon is-small is-left">
                 <fa :icon="['fab', 'atlassian']" />
               </span>
@@ -77,20 +77,18 @@
 
         </div> <!-- End of first column -->
 
-        <template v-if="jiraPass === '' || togglApiKey === ''">
+        <template v-if="(jiraAuthType === 'Basic Auth' && jiraName === '' && jiraPass === '') || (jiraAuthType === 'API Key' && atlassianApiKey === '')">
           <div class="column is-6">
             <article class="message is-dark is-small">
-              <div class="message-header">
-                Note
-              </div>
+              <div class="message-header">Note</div>
               <div class="message-body">
-                Before using this, please make sure you've set both your credentials <strong>and</strong> API key correctly. Also check out the Settings and make sure you adjust these to your needs. Happy logging!
+                Before using this, please make sure you've set both your credentials <strong>and</strong> API key(s) correctly. Also check out the Settings and make sure you adjust these to your needs. Happy logging!
               </div>
             </article>
           </div> <!-- End of second column -->
         </template>
 
-      </div> <!-- End of columns -->
+      </div> <!-- End of all columns -->
     </div>
   </section>
 </template>
@@ -106,8 +104,8 @@
         togglApiKey: store.get('toggl-api-key'),
         jiraName: store.get('jira-name'),
         jiraPass: store.get('jira-pass'),
-        jiraApiKey: store.get('jira-api-key'),
-        jiraAuthType: 'Basic Auth'
+        atlassianApiKey: store.get('atlassian-api-key'),
+        jiraAuthType: ''
       }
     },
     methods: {
@@ -115,9 +113,14 @@
         document.getElementById('saveAccountData').classList.add('is-loading')
         document.getElementById('saveAccountData').classList.add('is-warning')
 
-        store.set('jira-name', this.$refs.jiraName.value)
-        store.set('jira-pass', this.$refs.jiraPass.value)
         store.set('toggl-api-key', this.$refs.togglApiKey.value)
+
+        if (this.jiraAuthType === 'Basic Auth') {
+          store.set('jira-name', this.$refs.jiraName.value)
+          store.set('jira-pass', this.$refs.jiraPass.value)
+        } else if (this.jiraAuthType === 'API Key') {
+          store.set('atlassian-api-key', this.$refs.atlassianApiKey.value)
+        }
 
         setTimeout(function () {
           document.getElementById('saveAccountData').classList.remove('is-loading')
@@ -132,13 +135,18 @@
       this.$electron.ipcRenderer.on('clearCredentials', () => {
         document.getElementById('saveAccountData').setAttribute('disabled', true)
         // Only delete these, since we have other settings.
+        store.delete('toggl-api-key')
         store.delete('jira-name')
         store.delete('jira-pass')
-        store.delete('toggl-api-key')
+        store.delete('atlassian-api-key')
         // Update it visually
-        this.$refs.jiraName.value = ''
-        this.$refs.jiraPass.value = ''
         this.$refs.togglApiKey.value = ''
+        if (this.jiraAuthType === 'Basic Auth') {
+          this.$refs.jiraName.value = ''
+          this.$refs.jiraPass.value = ''
+        } else if (this.jiraAuthType === 'API Key') {
+          this.$refs.atlassianApiKey.value = ''
+        }
         document.getElementById('saveAccountData').removeAttribute('disabled')
       })
     }
