@@ -96,6 +96,7 @@ app.on('activate', () => {
 // =============================================================================
 // ipcMain.
 // =============================================================================
+// Get toggl time entries data.
 ipcMain.on('refreshToggl', (event, data) => {
   event.sender.send('refreshTogglTimeEntries', data)
 })

@@ -6,12 +6,12 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/index',
       name: 'index',
       component: require('@/components/Index').default
     },
     {
-      path: '/timers',
+      path: '/',
       name: 'timers',
       component: require('@/components/Timers').default
     },

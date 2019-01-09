@@ -25,7 +25,7 @@
         <nav class="navbar" role="navigation">
           <div class="level-left">
             <!-- Local navigation items for /index -->
-            <template v-if="this.$route.path === '/'">
+            <template v-if="this.$route.path === '/index'">
               <p class="navbar-item">
                 <router-link to="#">
                   <span class="icon is-small"><i><fa icon="trash"></fa></i></span>
@@ -35,7 +35,7 @@
             </template>
 
             <!-- Local navigation items for /timers -->
-            <template v-if="this.$route.path === '/timers'">
+            <template v-if="this.$route.path === '/'">
               <p class="navbar-item">
                 <router-link to="#">
                   <span class="icon is-small"><i><fa icon="sync-alt"></fa></i></span>

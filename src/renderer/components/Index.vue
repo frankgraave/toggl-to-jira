@@ -79,7 +79,7 @@
 
         <template v-if="togglApiKey === '' && (jiraName === '' && jiraPass === '' || atlassianApiKey === '')">
           <div class="column is-6">
-            <article class="message is-dark is-small">
+            <article class="message is-dark">
               <div class="message-header">Note</div>
               <div class="message-body">
                 Before using this, please make sure you've set both your credentials <strong>and</strong> API key(s) correctly. Also check out the Settings and make sure you adjust these to your needs. Happy logging!
