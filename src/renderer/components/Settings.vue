@@ -59,6 +59,21 @@
         loggedTag: store.get('loggedTag')
       }
     },
+    mounted () {
+      // When we receive the clearCredentials event that is
+      // emitted from src/renderer/App.vue, we clear the data
+      // as requested.
+      this.$electron.ipcRenderer.on('clearAllSettings', () => {
+        document.getElementById('saveSettings').setAttribute('disabled', true)
+        // Only delete these, since we have other settings.
+        store.set('ignoreProjectKey', '')
+        store.set('loggedTag', '')
+        this.clearInputs()
+        setTimeout(function () {
+          document.getElementById('saveSettings').removeAttribute('disabled')
+        }, 500)
+      })
+    },
     methods: {
       saveSettings () {
         document.getElementById('saveSettings').classList.add('is-loading')
@@ -71,6 +86,13 @@
           document.getElementById('saveSettings').classList.remove('is-loading')
           document.getElementById('saveSettings').classList.remove('is-warning')
         }, 500)
+      },
+      clearInputs () {
+        // When we delete credentials, update it visually.
+        let inputs = document.getElementsByClassName('input')
+        for (var i = 0; i < inputs.length; i++) {
+          inputs[i].value = ''
+        }
       }
     }
   }

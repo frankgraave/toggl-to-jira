@@ -77,7 +77,7 @@
 
         </div> <!-- End of first column -->
 
-        <template v-if="togglApiKey === '' && (jiraName === '' && jiraPass === '' || atlassianApiKey === '')">
+        <template v-if="togglApiKey === '' && atlassianApiKey === ''">
           <div class="column is-6">
             <article class="message is-dark">
               <div class="message-header">Note</div>
@@ -108,13 +108,34 @@
         jiraAuthType: store.get('jira-auth-type') ? store.get('jira-auth-type') : 'Basic Auth'
       }
     },
+    mounted () {
+      // When we receive the clearAllCredentials event that is
+      // emitted from src/renderer/App.vue, we clear the data
+      // as requested.
+      this.$electron.ipcRenderer.on('clearAllCredentials', () => {
+        document.getElementById('saveAccountData').setAttribute('disabled', true)
+        // Only delete these, since we have other settings.
+        store.set('toggl-api-key', '')
+        store.set('jira-name', '')
+        store.set('jira-pass', '')
+        store.set('atlassian-api-key', '')
+        this.clearInputs()
+        setTimeout(function () {
+          document.getElementById('saveAccountData').removeAttribute('disabled')
+        }, 500)
+      })
+    },
+    watch: {
+      jiraAuthType (value) {
+        store.set('jira-auth-type', value)
+      }
+    },
     methods: {
       saveAccountData () {
         document.getElementById('saveAccountData').classList.add('is-loading')
         document.getElementById('saveAccountData').classList.add('is-warning')
 
         store.set('toggl-api-key', this.$refs.togglApiKey.value)
-
         if (this.jiraAuthType === 'Basic Auth') {
           store.set('jira-name', this.$refs.jiraName.value)
           store.set('jira-pass', this.$refs.jiraPass.value)
@@ -134,26 +155,6 @@
           inputs[i].value = ''
         }
       }
-    },
-    watch: {
-      jiraAuthType (value) {
-        store.set('jira-auth-type', value)
-      }
-    },
-    mounted () {
-      // When we receive the clearCredentials event that is
-      // emitted from src/renderer/App.vue, we clear the data
-      // as requested.
-      this.$electron.ipcRenderer.on('clearCredentials', () => {
-        document.getElementById('saveAccountData').setAttribute('disabled', true)
-        // Only delete these, since we have other settings.
-        store.set('toggl-api-key', '')
-        store.set('jira-name', '')
-        store.set('jira-pass', '')
-        store.set('atlassian-api-key', '')
-        this.clearInputs()
-        document.getElementById('saveAccountData').removeAttribute('disabled')
-      })
     }
   }
 </script>

@@ -101,9 +101,13 @@ ipcMain.on('refreshToggl', (event, data) => {
   event.sender.send('refreshTogglTimeEntries', data)
 })
 
-// Clear the account data.
+// EVENT: clearAllCredentials - Clears the account data.
 ipcMain.on('clearCredentials', (event) => {
-  event.sender.send('clearCredentials')
+  event.sender.send('clearAllCredentials')
+})
+// EVENT: clearAllSettings - Clears the settings.
+ipcMain.on('clearSettings', (event) => {
+  event.sender.send('clearAllSettings')
 })
 
 /**

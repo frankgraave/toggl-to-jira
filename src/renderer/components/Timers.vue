@@ -1,14 +1,32 @@
 <template>
   <div>
-    <template v-if="togglEntriesData === null">
-      <div class="column is-11">
-        <article class="message is-success">
-          <div class="message-header">Notice</div>
-          <div class="message-body">
-            You're all done! Have a great day.
+    <template v-if="togglApiKey === ''">
+      <section class="section">
+        <div class="container">
+          <div class="column is-11">
+            <article class="message is-warning">
+              <div class="message-header">Uh-oh!</div>
+              <div class="message-body">
+                Please set up your <router-link to="/index">credentials</router-link> first!
+              </div>
+            </article>
           </div>
-        </article>
-      </div>
+        </div>
+      </section>
+    </template>
+    <template v-else-if="togglEntriesData === null">
+      <section class="section">
+        <div class="container">
+          <div class="column is-11">
+            <article class="message is-success">
+              <div class="message-header">Awesome!</div>
+              <div class="message-body">
+                You've logged all of your hours, have a great day!
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
     </template>
     <template v-else>
       <section class="section is-paddingless">
@@ -45,11 +63,15 @@
 </template>
 
 <script>
+  const Store = require('electron-store')
+  const store = new Store()
+
   export default {
     name: 'timers',
     data () {
       return {
-        togglEntriesData: null
+        togglEntriesData: null,
+        togglApiKey: store.get('toggl-api-key')
       }
     }
   }

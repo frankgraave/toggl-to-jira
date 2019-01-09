@@ -22,7 +22,7 @@
 
     <div id="app">
       <!--<div class="container">-->
-        <nav class="navbar" role="navigation">
+        <nav class="navbar is-light" role="navigation">
           <div class="level-left">
             <!-- Local navigation items for /index -->
             <template v-if="this.$route.path === '/index'">
@@ -48,8 +48,8 @@
             <template v-if="this.$route.path === '/settings'">
               <p class="navbar-item">
                 <router-link to="#">
-                  <span class="icon is-small"><i><fa icon="filter"></fa></i></span>
-                  <span v-on:click="">Extra's</span>
+                  <span class="icon is-small"><i><fa icon="trash"></fa></i></span>
+                  <span v-on:click="clearSettings">Clear settings</span>
                 </router-link>
               </p>
             </template>
@@ -67,6 +67,9 @@
     methods: {
       clearCredentials () {
         this.$electron.ipcRenderer.send('clearCredentials')
+      },
+      clearSettings () {
+        this.$electron.ipcRenderer.send('clearSettings')
       }
     }
   }
