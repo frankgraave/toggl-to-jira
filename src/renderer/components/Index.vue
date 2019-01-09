@@ -8,26 +8,6 @@
           <h4 class="title">Account credentials</h4>
 
           <div class="field">
-            <label class="label">Jira username</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input" type="text" ref="jiraName" v-model="jiraName" placeholder="Jira username">
-              <span class="icon is-small is-left">
-                <fa :icon="['fas', 'clock']" />
-              </span>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Jira password</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input" type="password" ref="jiraPass" v-model="jiraPass" placeholder="Jira password">
-              <span class="icon is-small is-left">
-                <fa :icon="['fas', 'key']" />
-              </span>
-            </div>
-          </div>
-
-          <div class="field">
             <label class="label">Toggl API Key</label>
             <div class="control has-icons-left has-icons-right">
               <input class="input" type="text" ref="togglApiKey" v-model="togglApiKey" placeholder="Toggl API Key">
@@ -36,6 +16,59 @@
               </span>
             </div>
           </div>
+
+          <div class="field">
+            <label class="label">Jira Auth method</label>
+            <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <label class="radio">
+                      <input id="jira-auth-basic" type="radio" value="Basic Auth" v-model="jiraAuthType">
+                      Basic Auth
+                    </label>
+                    <label class="radio">
+                      <input id="jira-auth-api" type="radio" value="API Token" v-model="jiraAuthType">
+                      API Token
+                    </label>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+          <template v-if="jiraAuthType === 'Basic Auth'">
+            <div class="field">
+              <label class="label">Jira username</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="text" ref="jiraName" v-model="jiraName" placeholder="Jira username">
+                {{ jiraAuthType }}
+                <span class="icon is-small is-left">
+                  <fa :icon="['fas', 'clock']" />
+                </span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Jira password</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="password" ref="jiraPass" v-model="jiraPass" placeholder="Jira password">
+                <span class="icon is-small is-left">
+                  <fa :icon="['fas', 'key']" />
+                </span>
+              </div>
+            </div>
+          </template>
+
+          <template v-else>
+            <div class="field">
+              <label class="label">Jira API Key</label>
+              <div class="control has-icons-left has-icons-right">
+                <input class="input" type="text" ref="jiraApiKey" v-model="jiraApiKey" placeholder="Jira API Key">
+                <span class="icon is-small is-left">
+                <fa :icon="['fas', 'power-off']" />
+              </span>
+              </div>
+            </div>
+          </template>
 
           <div class="field is-grouped">
             <div class="control">
@@ -71,9 +104,11 @@
     name: 'index',
     data () {
       return {
+        togglApiKey: store.get('toggl-api-key'),
         jiraName: store.get('jira-name'),
         jiraPass: store.get('jira-pass'),
-        togglApiKey: store.get('toggl-api-key')
+        jiraApiKey: store.get('jira-api-key'),
+        jiraAuthType: 'Basic Auth'
       }
     },
     methods: {
