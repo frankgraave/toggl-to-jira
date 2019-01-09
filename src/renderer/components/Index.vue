@@ -10,7 +10,7 @@
           <div class="field">
             <label class="label">Toggl API Key</label>
             <div class="control has-icons-left has-icons-right">
-              <input class="input" type="text" ref="togglApiKey" v-model="togglApiKey" placeholder="Toggl API Key">
+              <input class="input" type="password" ref="togglApiKey" v-model="togglApiKey" placeholder="Toggl API Key">
               <span class="icon is-small is-left">
                 <fa :icon="['fas', 'power-off']" />
               </span>
@@ -27,8 +27,8 @@
                       Basic Auth
                     </label>
                     <label class="radio">
-                      <input id="jira-auth-api" type="radio" value="API Token" v-model="jiraAuthType">
-                      API Token
+                      <input id="jira-auth-api" type="radio" value="API Key" v-model="jiraAuthType">
+                      API Key
                     </label>
                   </div>
                 </div>
@@ -40,7 +40,6 @@
               <label class="label">Jira username</label>
               <div class="control has-icons-left has-icons-right">
                 <input class="input" type="text" ref="jiraName" v-model="jiraName" placeholder="Jira username">
-                {{ jiraAuthType }}
                 <span class="icon is-small is-left">
                   <fa :icon="['fas', 'clock']" />
                 </span>
@@ -62,9 +61,9 @@
             <div class="field">
               <label class="label">Jira API Key</label>
               <div class="control has-icons-left has-icons-right">
-                <input class="input" type="text" ref="jiraApiKey" v-model="jiraApiKey" placeholder="Jira API Key">
+                <input class="input" type="password" ref="jiraApiKey" v-model="jiraApiKey" placeholder="Jira API Key">
                 <span class="icon is-small is-left">
-                <fa :icon="['fas', 'power-off']" />
+                <fa :icon="['fab', 'atlassian']" />
               </span>
               </div>
             </div>
