@@ -47,10 +47,58 @@ function appReady () {
     icon: Path.join(__static, 'icons/iconTemplate.png')
   })
 
-  // Provide context menu on right click to quit application.
-  const contextMenu = Menu.buildFromTemplate([
-    {label: 'Quit', click () { app.quit() }}
-  ])
+  const application = {
+    label: 'Toggl to Jira',
+    submenu: [
+      {
+        label: 'About Toggl to Jira',
+        selector: 'orderFrontStandardAboutPanel:'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click: () => {
+          app.quit()
+        }
+      }
+    ]
+  }
+
+  const edit = {
+    label: 'Edit',
+    submenu: [
+      {
+        label: 'Cut',
+        accelerator: 'CmdOrCtrl+X',
+        selector: 'cut:'
+      },
+      {
+        label: 'Copy',
+        accelerator: 'CmdOrCtrl+C',
+        selector: 'copy:'
+      },
+      {
+        label: 'Paste',
+        accelerator: 'CmdOrCtrl+V',
+        selector: 'paste:'
+      },
+      {
+        label: 'Select All',
+        accelerator: 'CmdOrCtrl+A',
+        selector: 'selectAll:'
+      }
+    ]
+  }
+
+  const template = [
+    application,
+    edit
+  ]
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 
   // Fix for making API calls to Jira REST Server API.
   mainWindow.window.webContents.setUserAgent('xxx')
@@ -68,7 +116,7 @@ function appReady () {
     mainWindow.window.focus()
   })
   mainWindow.tray.on('right-click', () => {
-    mainWindow.tray.popUpContextMenu(contextMenu)
+    mainWindow.tray.popUpContextMenu(Menu.buildFromTemplate(template))
   })
 
   mainWindow.on('closed', () => {
@@ -79,7 +127,11 @@ function appReady () {
 // =============================================================================
 // App main.
 // =============================================================================
-app.on('ready', appReady)
+// app.on('ready', appReady)
+
+app.on('ready', () => {
+  appReady()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

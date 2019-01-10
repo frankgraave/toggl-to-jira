@@ -85,7 +85,7 @@
         setTimeout(function () {
           document.getElementById('saveSettings').classList.remove('is-loading')
           document.getElementById('saveSettings').classList.remove('is-warning')
-        }, 500)
+        }, 300)
       },
       clearInputs () {
         // When we delete credentials, update it visually.

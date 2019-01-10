@@ -3,13 +3,13 @@
     <div class="container">
 
       <div class="columns">
-        <div class="column is-5">
+        <div class="column is-6">
 
           <h4 class="title">Account credentials</h4>
 
           <div class="field">
             <label class="label">Toggl API Key</label>
-            <div class="control has-icons-left has-icons-right">
+            <div class="control has-icons-left">
               <input class="input" type="text" ref="togglApiKey" v-model="togglApiKey" placeholder="Toggl API Key">
               <span class="icon is-small is-left">
                 <fa :icon="['fas', 'power-off']" />
@@ -38,7 +38,7 @@
           <template v-if="jiraAuthType === 'Basic Auth'">
             <div class="field">
               <label class="label">Jira username</label>
-              <div class="control has-icons-left has-icons-right">
+              <div class="control has-icons-left">
                 <input class="input" type="text" ref="jiraName" v-model="jiraName" placeholder="Jira username">
                 <span class="icon is-small is-left">
                   <fa :icon="['fab', 'jira']" />
@@ -48,7 +48,7 @@
 
             <div class="field">
               <label class="label">Jira password</label>
-              <div class="control has-icons-left has-icons-right">
+              <div class="control has-icons-left">
                 <input class="input" type="password" ref="jiraPass" v-model="jiraPass" placeholder="Jira password">
                 <span class="icon is-small is-left">
                   <fa :icon="['fas', 'key']" />
@@ -60,7 +60,7 @@
           <template v-else>
             <div class="field">
               <label class="label">Atlassian API Key</label>
-              <div class="control has-icons-left has-icons-right">
+              <div class="control has-icons-left">
                 <input class="input" type="text" ref="atlassianApiKey" v-model="atlassianApiKey" placeholder="Atlassian ID API Key">
                 <span class="icon is-small is-left">
                 <fa :icon="['fab', 'atlassian']" />
@@ -78,7 +78,7 @@
         </div> <!-- End of first column -->
 
         <template v-if="togglApiKey === '' && atlassianApiKey === ''">
-          <div class="column is-6">
+          <div class="column is-5">
             <article class="message is-dark">
               <div class="message-header">Note</div>
               <div class="message-body">
@@ -122,7 +122,7 @@
         this.clearInputs()
         setTimeout(function () {
           document.getElementById('saveAccountData').removeAttribute('disabled')
-        }, 500)
+        }, 300)
       })
     },
     watch: {
@@ -146,7 +146,7 @@
         setTimeout(function () {
           document.getElementById('saveAccountData').classList.remove('is-loading')
           document.getElementById('saveAccountData').classList.remove('is-warning')
-        }, 500)
+        }, 300)
       },
       clearInputs () {
         // When we delete credentials, update it visually.
