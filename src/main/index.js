@@ -48,23 +48,11 @@ function appReady () {
   })
 
   const application = {
-    label: 'Toggl to Jira',
-    submenu: [
-      {
-        label: 'About Toggl to Jira',
-        selector: 'orderFrontStandardAboutPanel:'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Quit',
-        accelerator: 'Command+Q',
-        click: () => {
-          app.quit()
-        }
-      }
-    ]
+    label: 'Quit',
+    accelerator: 'Command+Q',
+    click: () => {
+      app.quit()
+    }
   }
 
   const edit = {
