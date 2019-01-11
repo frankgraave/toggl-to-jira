@@ -52,11 +52,6 @@
             <!-- Local navigation items for /settings -->
             <template v-if="this.$route.path === '/settings'">
               <p class="navbar-item">
-                <router-link to="#">
-                  <span class="icon is-small"><i><fa icon="trash"></fa></i></span>
-                  <span v-on:click="clearSettings">Clear settings</span>
-                </router-link>
-                &nbsp;
                 <router-link to="/jira-board-settings">
                   <span class="icon is-small"><i><fa :icon="['fab', 'jira']" /></i></span>
                   <span v-on:click="">Jira Boards</span>
@@ -88,9 +83,6 @@
     methods: {
       clearCredentials () {
         this.$electron.ipcRenderer.send('clearCredentials')
-      },
-      clearSettings () {
-        this.$electron.ipcRenderer.send('clearSettings')
       }
     }
   }

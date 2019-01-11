@@ -15,18 +15,12 @@
       </section>
     </template>
     <template v-else-if="togglEntriesData === null">
-      <section class="section">
-        <div class="container">
-          <div class="column is-11">
-            <article class="message is-success">
-              <div class="message-header">Awesome!</div>
-              <div class="message-body">
-                You've logged all of your hours, have a great day!
-              </div>
-            </article>
-          </div>
+      <article class="message is-success">
+        <div class="message-header">No entries</div>
+        <div class="message-body">
+          If you expect entries, check your <router-link to="/settings">settings</router-link>. Otherwise, great job on logging all your hours!
         </div>
-      </section>
+      </article>
     </template>
     <template v-else>
       <section class="section is-paddingless">
