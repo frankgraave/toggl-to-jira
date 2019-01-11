@@ -15,25 +15,31 @@
         <section class="section">
             <div class="container">
                 <div class="columns">
-                    <div class="column is-8">
-                        <!--Container oid?-->
+                    <div class="column is-6">
                         <!--Column 1 - Field 1-->
                         <div class="field">
-                            <label class="label">Your Jira Board</label>
-                            <div class="control">
+                            <label class="label">Jira REST API Url(s)</label>
+                            <div class="control has-icons-left">
                                 <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                                <span class="icon is-small is-left">
+                                    <fa :icon="['fab', 'jira']" />
+                                </span>
                             </div>
                         </div>
                         <div class="field">
-                            <label class="label">Your Jira Board</label>
-                            <div class="control">
+                            <div class="control has-icons-left">
                                 <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                                <span class="icon is-small is-left">
+                                    <fa :icon="['fab', 'jira']" />
+                                </span>
                             </div>
                         </div>
                         <div class="field">
-                            <label class="label">Your Jira Board</label>
-                            <div class="control">
+                            <div class="control has-icons-left">
                                 <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                                <span class="icon is-small is-left">
+                                    <fa :icon="['fab', 'jira']" />
+                                </span>
                             </div>
                         </div>
                         <!--Column 1 - Controls-->
@@ -41,7 +47,14 @@
                             Save
                         </button>
                     </div> <!-- End of first column -->
-                    <div class="column is-4">
+                    <div class="column is-5">
+                        <label class="label">&nbsp;</label>
+                        <article class="message is-info is-small">
+                            <div class="message-header">Note</div>
+                            <div class="message-body">
+                                Enter the project REST API Url's here. If you have two different boards using the same ticket key's, then please select a specific one to use in the <router-link to="/settings">settings</router-link>.
+                            </div>
+                        </article>
                     </div> <!-- End of second column -->
                 </div> <!-- End of columns -->
             </div>

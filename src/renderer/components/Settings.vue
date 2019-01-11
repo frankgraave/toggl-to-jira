@@ -19,12 +19,28 @@
           <div class="column is-5">
             <!--Container oid?-->
             <!--Column 1 - Field 1-->
+            <!--<div class="field">-->
+              <!--<label class="label">Current used Jira Board</label>-->
+              <!--<div class="control">-->
+                <!--<input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" disabled>-->
+              <!--</div>-->
+              <!--<p class="help"><em>Note: this URL is the one that's being used for the REST API calls. Adjust this URL in the <router-link to="/jira-board-settings">Jira Boards</router-link> Settings.</em></p>-->
+            <!--</div>-->
             <div class="field">
               <label class="label">Current used Jira Board</label>
-              <div class="control">
-                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" disabled>
+              <div class="control has-icons-left">
+                <div class="select">
+                  <select>
+                    <option>https://jira.goalgorilla.com/rest/api</option>
+                    <option>https://jira.goalgorilla.com/rest/api</option>
+                    <option>https://jira.goalgorilla.com/rest/api</option>
+                  </select>
+                </div>
+                <p class="help"><em>Note: this URL is the one that's being used for the REST API calls. Adjust this URL in the <router-link to="/jira-board-settings">Jira Boards</router-link> Settings.</em></p>
+                <div class="icon is-small is-left">
+                  <fa :icon="['fab', 'jira']" />
+                </div>
               </div>
-              <p class="help"><em>Note: this URL is the one that's being used for the REST API calls. Adjust this URL in the <router-link to="/jira-board-settings">Jira Boards</router-link> Settings.</em></p>
             </div>
             <!--Column 1 - Field 1-->
             <div class="field">
@@ -32,8 +48,11 @@
               <div class="field-body">
                 <div class="field is-expanded">
                   <div class="field has-addons">
-                    <p class="control is-expanded">
+                    <p class="control is-expanded has-icons-left">
                       <input class="input" type="text" ref="ignoreProjectKey" v-bind:value="ignoreProjectKey" placeholder="e.g. BEN">
+                      <span class="icon is-small is-left">
+                        <fa :icon="['fas', 'eye-slash']" />
+                      </span>
                     </p>
                     <p class="control">
                       <a class="button is-static">-XXXXX</a>
@@ -53,16 +72,22 @@
             <!--Column 2 - Field 1-->
             <div class="field">
               <label class="label">Logged tag</label>
-              <div class="control">
+              <div class="control has-icons-left">
                 <input class="input" type="text" ref="loggedTag" v-bind:value="loggedTag" placeholder="e.g. logged">
+                <span class="icon is-small is-left">
+                  <fa :icon="['fas', 'check']" />
+                </span>
               </div>
               <p class="help"><em>Note: Case sensitive. After syncing these tickets will be tagged with this value in Toggl.</em></p>
             </div>
             <!--Column 2 - Field 2-->
             <div class="field">
               <label class="label">Ignore tag</label>
-              <div class="control">
+              <div class="control has-icons-left">
                 <input class="input" type="text" ref="ignoreTag" v-bind:value="ignoreTag" placeholder="e.g. Ignore">
+                <span class="icon is-small is-left">
+                  <fa :icon="['fas', 'eye-slash']" />
+                </span>
               </div>
               <p class="help"><em>Note: Case sensitive. After syncing these tickets will be ignored in this application.</em></p>
             </div>
