@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="hero is-dark">
+        <section class="hero is-light is-small">
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title">
@@ -15,7 +15,7 @@
         <section class="section">
             <div class="container">
                 <div class="columns">
-                    <div class="column is-7">
+                    <div class="column is-8">
                         <!--Container oid?-->
                         <!--Column 1 - Field 1-->
                         <div class="field">
@@ -41,7 +41,7 @@
                             Save
                         </button>
                     </div> <!-- End of first column -->
-                    <div class="column is-3">
+                    <div class="column is-4">
                     </div> <!-- End of second column -->
                 </div> <!-- End of columns -->
             </div>

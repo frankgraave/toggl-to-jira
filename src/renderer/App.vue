@@ -22,7 +22,7 @@
 
     <div id="app">
       <!--<div class="container">-->
-        <nav class="navbar is-light" role="navigation">
+        <nav class="navbar" role="navigation">
           <div class="level-left">
             <!-- Local navigation items for /index -->
             <template v-if="this.$route.path === '/index'">
@@ -58,7 +58,7 @@
                 </router-link>
                 &nbsp;
                 <router-link to="/jira-board-settings">
-                  <span class="icon is-small"><i><fa :icon="['fab', 'atlassian']" /></i></span>
+                  <span class="icon is-small"><i><fa :icon="['fab', 'jira']" /></i></span>
                   <span v-on:click="">Jira Boards</span>
                 </router-link>
               </p>
@@ -101,8 +101,15 @@
     display: none;
   }
   nav.navbar {
-    box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
+    background-color: #1a2736;
+    box-shadow: 0 8px 16px rgba(10, 10, 10, 0.2);
     padding: 0.5rem 0;
+  }
+  .navbar-item a {
+    color: #999999;
+  }
+  .navbar-item a:hover {
+    color: #00adb5;
   }
   #app {
     position: relative;
@@ -128,7 +135,7 @@
     height: 65px;
     width: 100%;
   }
-  aside .router-link-exact-active {
+  aside ul li .router-link-exact-active {
     background-color: #13171c;
     color: #00adb5;
     outline: unset;
@@ -137,7 +144,9 @@
   aside ul li a.button {
     color: #999999;
   }
-  aside ul li a.button:active,
+  aside ul li a.button:active {
+    color: #00adb5 !important;
+  }
   aside ul li a.button:visited,
   aside ul li a.button:link {
     color: #999999;

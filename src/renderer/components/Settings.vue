@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="hero is-dark">
+    <section class="hero is-light is-small">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
@@ -20,11 +20,11 @@
             <!--Container oid?-->
             <!--Column 1 - Field 1-->
             <div class="field">
-              <label class="label">Current Jira Board</label>
+              <label class="label">Current used Jira Board</label>
               <div class="control">
                 <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" disabled>
               </div>
-              <p class="help">Note: this URL is the one that's being used for the REST API calls. Adjust this URL in the Jira Boards Settings.</p>
+              <p class="help"><strong>Note:</strong> this URL is the one that's being used for the REST API calls. Adjust this URL in the <router-link to="/jira-board-settings">Jira Boards</router-link> Settings.</p>
             </div>
             <!--Column 1 - Field 1-->
             <div class="field">
@@ -39,7 +39,7 @@
                       <a class="button is-static">-XXXXX</a>
                     </p>
                   </div>
-                  <p class="help">Note: Case sensitive. This project will be filtered out of the list of tickets that can be synced.</p>
+                  <p class="help"><strong>Note:</strong> Case sensitive. This project will be filtered out of the list of tickets that can be synced.</p>
                 </div>
               </div>
             </div>
@@ -56,7 +56,7 @@
               <div class="control">
                 <input class="input" type="text" ref="loggedTag" v-bind:value="loggedTag" placeholder="e.g. logged">
               </div>
-              <p class="help">Note: Case sensitive. After syncing these tickets will be tagged with this value in Toggl.</p>
+              <p class="help"><strong>Note:</strong> Case sensitive. After syncing these tickets will be tagged with this value in Toggl.</p>
             </div>
             <!--Column 2 - Field 2-->
             <div class="field">
@@ -64,7 +64,7 @@
               <div class="control">
                 <input class="input" type="text" ref="ignoreTag" v-bind:value="ignoreTag" placeholder="e.g. Ignore">
               </div>
-              <p class="help">Note: Case sensitive. After syncing these tickets will be <strong>Ignored</strong> in this application.</p>
+              <p class="help"><strong>Note:</strong> Case sensitive. After syncing these tickets will be <strong>Ignored</strong> in this application.</p>
             </div>
           </div> <!-- End of second column -->
         </div> <!-- End of columns -->
