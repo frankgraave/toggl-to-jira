@@ -21,6 +21,11 @@ export default new Router({
       component: require('@/components/Settings').default
     },
     {
+      path: '/jira-board-settings',
+      name: 'jira-board-settings',
+      component: require('@/components/AdditionalSettings/JiraBoardSettings').default
+    },
+    {
       path: '*',
       redirect: '/'
     }

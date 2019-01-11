@@ -2,11 +2,19 @@
   <section class="section">
     <div class="container">
 
+      <h4 class="title">Settings</h4>
       <div class="columns">
         <div class="column is-5">
-
-          <h4 class="title">Settings</h4>
-
+          <!--Container oid?-->
+          <!--Column 1 - Field 1-->
+          <div class="field">
+            <label class="label">Your Jira Board</label>
+            <div class="control">
+              <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+            </div>
+            <p class="help">The URL to your Jira installation.</p>
+          </div>
+          <!--Column 1 - Field 1-->
           <div class="field">
             <div class="label">Ignore this project</div>
             <div class="field-body">
@@ -23,7 +31,14 @@
               </div>
             </div>
           </div>
-
+          <!--Column 1 - Controls-->
+          <!-- TODO: Bind click function with update/loader -->
+          <button id="saveSettings" class="button is-dark" v-on:click="saveSettings">
+            Save
+          </button>
+        </div> <!-- End of first column -->
+        <div class="column is-5">
+          <!--Column 2 - Field 1-->
           <div class="field">
             <label class="label">Logged tag</label>
             <div class="control">
@@ -31,17 +46,15 @@
             </div>
             <p class="help">Note: Case sensitive. After syncing these tickets will be tagged with this value in Toggl.</p>
           </div>
-
-          <!-- TODO: Bind click function with update/loader -->
-          <button id="saveSettings" class="button is-dark" v-on:click="saveSettings">
-            Save
-          </button>
-
-        </div> <!-- End of first column -->
-
-        <div class="column is-6">
+          <!--Column 2 - Field 2-->
+          <div class="field">
+            <label class="label">Ignore tag</label>
+            <div class="control">
+              <input class="input" type="text" ref="ignoreTag" v-bind:value="ignoreTag" placeholder="e.g. Ignore">
+            </div>
+            <p class="help">Note: Case sensitive. After syncing these tickets will be <strong>Ignored</strong> in this application.</p>
+          </div>
         </div> <!-- End of second column -->
-
       </div> <!-- End of columns -->
     </div>
   </section>

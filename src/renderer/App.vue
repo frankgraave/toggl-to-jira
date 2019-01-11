@@ -56,8 +56,24 @@
                   <span class="icon is-small"><i><fa icon="trash"></fa></i></span>
                   <span v-on:click="clearSettings">Clear settings</span>
                 </router-link>
+                &nbsp;
+                <router-link to="/jira-board-settings">
+                  <span class="icon is-small"><i><fa :icon="['fab', 'atlassian']" /></i></span>
+                  <span v-on:click="">Jira Boards</span>
+                </router-link>
               </p>
             </template>
+
+            <!-- Local navigation items for /jira-board-settings -->
+            <template v-if="this.$route.path === '/jira-board-settings'">
+              <p class="navbar-item">
+                <router-link to="/settings">
+                  <span class="icon is-small"><i><fa icon="arrow-left"></fa></i></span>
+                  <span v-on:click="">Settings</span>
+                </router-link>
+              </p>
+            </template>
+
           </div>
         </nav>
       <!--</div>-->
