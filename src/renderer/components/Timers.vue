@@ -1,5 +1,13 @@
 <template>
   <div>
+    <template v-if="statusMessage !== ''">
+      <article class="message is-info">
+        <div class="message-header">Status</div>
+        <div class="message-body">
+          {{ statusMessage }}
+        </div>
+      </article>
+    </template>
     <!--If the user has not set up their Toggl API Key-->
     <template v-if="togglApiKey === ''">
       <article class="message is-warning">
@@ -10,7 +18,7 @@
       </article>
     </template>
     <!--Show if we have no data-->
-    <template v-else-if="togglEntriesData === null">
+    <template v-else-if="untagged.length === 0 && statusMessage.length === 0">
       <article class="message is-success">
         <div class="message-header">No entries</div>
         <div class="message-body">
@@ -19,44 +27,50 @@
       </article>
     </template>
     <!--Show default-->
-    <template v-if="status !== ''">
-      <article class="message is-success">
-        <div class="message-header">Status</div>
-        <div class="message-body">
-          {{ status }}
-        </div>
-      </article>
-    </template>
     <template v-else>
       <section class="section is-paddingless">
-        <div class="table is-fullwidth is-striped">
+        <table class="table is-fullwidth is-striped">
           <thead>
-          <tr>
-            <th width="5%">Ticket</th>
-            <th width="23%">Description</th>
-            <th width="1%">Duration</th>
-            <th width="2%">Date</th>
-            <th width="9%">Actions</th>
-          </tr>
+            <tr>
+              <th width="9%">Ticket</th>
+              <th width="20%">Description</th>
+              <th width="5%">Duration</th>
+              <th width="4%">Date</th>
+              <th width="8%">Actions</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <!-- When we do the for each here, make the ticket nr clickable? -->
-            <td>OSSUPPORT-1928</td>
-            <td>This is a description</td>
-            <td>00:15:00</td>
-            <td>5 Jan</td>
-            <td>1</td>
-          </tr>
-          <tr>
-            <td>OSSUPPORT-1928</td>
-            <td>This is a description</td>
-            <td>00:15:00</td>
-            <td>5 Jan</td>
-            <td>1</td>
-          </tr>
+            <tr v-for="value in untagged">
+              <!--If there's an unknown ticket, show this to the user-->
+              <template v-if="value.ticket === 'Unknown Ticket!'">
+                <td><span class="unknown-ticket"><strong>{{ value.ticket }}</strong></span></td>
+              </template>
+              <template v-else>
+                <td>
+                  <router-link to="#">
+                    <span v-on:click="open(jiraUrl + '/browse/' + value.ticket)">
+                      <fa icon="external-link-square-alt"></fa>
+                    </span>
+                  </router-link>
+                  {{ value.ticket }}
+                </td>
+              </template>
+
+              <td>{{ value.description }}</td>
+              <td>{{ $timeTo.fromS(value.duration, 'hh:mm:ss') }}</td>
+              <td>{{ $dateFns.format(value.start, 'D MMM') }}</td>
+              <td>
+                <!--If there's an unknown ticket, provide the ignore option-->
+                <template v-if="value.ticket !== 'Unknown Ticket!'">
+                  <span id="logEntry" class="button is-success is-small" v-on:click="logEntry(value)"><fa :icon="['fas', 'arrow-right']" /></span>
+                </template>
+                <template v-else>
+                  <span class="button is-danger is-small"><fa :icon="['fas', 'exclamation-circle']" /></span>&nbsp;&nbsp;<span id="ignoreEntry" class="button is-warning is-small" v-on:click="ignoreEntry(value)"><fa :icon="['fas', 'archive']" /></span>
+                </template>
+              </td>
+            </tr>
           </tbody>
-        </div>
+        </table>
       </section>
     </template>
   </div>
@@ -71,18 +85,38 @@
     name: 'timers',
     data () {
       return {
-        status: '',
-        togglEntriesData: null,
-        togglApiKey: store.get('toggl-api-key')
+        statusMessage: '',
+        tagged: [],
+        untagged: [],
+        timeEntries: [],
+        togglApiKey: store.get('toggl-api-key'),
+        ignoreProjectKey: store.get('ignoreProjectKey'),
+        loggedTag: store.get('loggedTag'),
+        ignoreTag: store.get('ignoreTag'),
+        jiraUrl: store.get('jiraUrl')
       }
     },
     mounted () {
+      // Once mounted, get the data.
+      this.getTogglData()
+      // On the event 'getTogglTimeEntries', get the data.
+      this.$electron.ipcRenderer.on('getTogglTimeEntries', () => {
+        // Here we need to remove the listener to prevent memory
+        // leaks due to many event listeners stacking up.
+        this.$electron.ipcRenderer.removeAllListeners('getTogglTimeEntries')
+        // Get the data.
+        this.getTogglData()
+      })
     },
     methods: {
+      open (link) {
+        this.$electron.shell.openExternal(link)
+      },
       // Get the worklogs through the Toggl API.
       getTogglData: function (e) {
         // Show that we are trying to fetch the timers.
-        this.status = 'Getting all of your time entries...'
+        this.statusMessage = 'Loading your Toggl time entries...'
+        let toggl = this
         if (this.togglApiKey !== '') {
           axios.get('https://www.toggl.com/api/v8/time_entries', {
             withCredentials: true,
@@ -91,20 +125,87 @@
               'Content-Type': 'application/json'
             }
           }).then(function (response) {
-            // We've got our result, so we hide the status.
-            this.status = ''
-            this.timeEntries = response.data.reverse()
+            // We've got our result, so we hide the statusMessage.
+            toggl.statusMessage = ''
+            toggl.timeEntries = response.data.reverse()
+            console.log(toggl.timeEntries)
             // Function to only get entries that met custom
             // criteria from Settings.vue.
-            this.setEntryProperties(this.timeEntries)
+            toggl.setEntryProperties(toggl.timeEntries)
           }).catch(function (error) {
-            this.status = 'Something went wrong, please try again later.'
+            toggl.statusMessage = 'Something went wrong :('
             console.log('Error: ' + error)
           })
-        } else {
-          this.status = 'No API key.'
+        }
+      },
+      // Manipulate the data and only get what we need
+      // store it in a new array so we can populate
+      // our table with those entries.
+      setEntryProperties: function (data) {
+        // For global vars.
+        let togglTimers = this
+        // Go through the data.
+        for (const entries in data) {
+          // Store each timer.
+          let entry = data[entries]
+          // Skip running timers.
+          if (entry['duration'] < 0) {
+            continue
+          }
+          // Check for a match on the ticket.
+          let match = entry.description.match('([A-Z]{1,}-[0-9]{1,})')
+          // New iteration.
+          if (match && (this.ignoreProjectKey === '' || match[0].indexOf(this.ignoreProjectKey) === -1)) {
+            if (entry.hasOwnProperty('tags') && Object.values(entry.tags).includes(this.loggedTag)) {
+              togglTimers.tagged.push(entry)
+            } else {
+              // Add ticket number we matched.
+              entry['ticket'] = match[0]
+              entry['originalDescription'] = entry['description']
+              // Manipulate the description.
+              let desc = entry['description'].replace(match[0], '')
+              desc = desc.replace(/- /, '')
+              entry['description'] = desc
+
+              togglTimers.untagged.push(entry)
+            }
+          } else if (!match) {
+            if (entry.hasOwnProperty('tags') && Object.values(entry.tags).includes(this.ignoreTag)) {
+              togglTimers.tagged.push(entry)
+            } else {
+              // No ticket number found.
+              entry['ticket'] = 'Unknown Ticket!'
+              entry['description'] = entry['description']
+              togglTimers.untagged.push(entry)
+            }
+          }
         }
       }
     }
   }
 </script>
+
+<style>
+  table {
+    table-layout: fixed;
+  }
+  td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .table td {
+    font-size: 15px;
+    vertical-align: middle !important;
+  }
+  .table td a {
+    color: #999999;
+  }
+  .table td a:hover {
+    color: #00adb5;
+  }
+
+  span.unknown-ticket strong {
+    color: #ff3860;
+  }
+</style>

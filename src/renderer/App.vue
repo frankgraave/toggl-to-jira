@@ -21,7 +21,7 @@
     </aside>
 
     <div id="app">
-      <nav class="navbar" role="navigation">
+      <nav class="navbar is-fixed-top" role="navigation">
         <div class="level-left">
           <!-- Local navigation items for /index -->
           <template v-if="this.$route.path === '/index'">
@@ -38,7 +38,7 @@
             <p class="navbar-item">
               <router-link to="#">
                 <span class="icon is-small"><i><fa icon="sync-alt"></fa></i></span>
-                <span v-on:click="">Refresh</span>
+                <span v-on:click="getTogglData">Refresh</span>
               </router-link>
               &nbsp;
               <router-link to="#">
@@ -82,6 +82,9 @@
       open (link) {
         this.$electron.shell.openExternal(link)
       },
+      getTogglData () {
+        this.$electron.ipcRenderer.send('getTogglData')
+      },
       clearCredentials () {
         this.$electron.ipcRenderer.send('clearCredentials')
       }
@@ -93,10 +96,11 @@
   body::-webkit-scrollbar {
     display: none;
   }
-  nav.navbar {
+  nav.navbar.is-fixed-top {
     background-color: #1a2736;
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.2);
     padding: 0.5rem 0;
+    left: 70px;
   }
   .navbar-item a {
     color: #999999;
@@ -107,6 +111,7 @@
   #app {
     position: relative;
     left: 70px;
+    top: 3.5rem;
   }
   section.section {
     padding: 1.5rem;

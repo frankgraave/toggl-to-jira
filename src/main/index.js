@@ -137,8 +137,8 @@ app.on('activate', () => {
 // ipcMain.
 // =============================================================================
 // EVENT: getTogglTimeEntries - Gets toggl time entries data.
-ipcMain.on('refreshToggl', (event, data) => {
-  event.sender.send('getTogglTimeEntries', data)
+ipcMain.on('getTogglData', (event) => {
+  event.sender.send('getTogglTimeEntries')
 })
 // EVENT: clearAllCredentials - Clears the account data.
 ipcMain.on('clearCredentials', (event) => {

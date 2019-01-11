@@ -84,6 +84,8 @@
   const Store = require('electron-store')
   const store = new Store()
 
+  store.set('jiraUrl', 'https://jira.goalgorilla.com')
+
   export default {
     name: 'settings',
     data () {
@@ -91,16 +93,7 @@
         ignoreProjectKey: store.get('ignoreProjectKey'),
         loggedTag: store.get('loggedTag'),
         ignoreTag: store.get('ignoreTag'),
-        jiraUrl: 'https://jira.goalgorilla.com'
-      }
-    },
-    computed: {
-      urls: function () {
-        return this.jiraProjectUrls.filter(function (url) {
-          if (url !== '') {
-            return url
-          }
-        })
+        jiraUrl: store.get('jiraUrl')
       }
     },
     methods: {
@@ -116,13 +109,6 @@
           document.getElementById('saveSettings').classList.remove('is-loading')
           document.getElementById('saveSettings').classList.remove('is-warning')
         }, 300)
-      },
-      clearInputs () {
-        // When we delete credentials, update it visually.
-        let inputs = document.getElementsByClassName('input')
-        for (var i = 0; i < inputs.length; i++) {
-          inputs[i].value = ''
-        }
       }
     }
   }

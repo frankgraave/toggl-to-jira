@@ -122,10 +122,10 @@
       }
     },
     mounted () {
-      // When we receive the clearAllCredentials event that is
-      // emitted from src/renderer/App.vue, we clear the data
-      // as requested.
       this.$electron.ipcRenderer.on('clearAllCredentials', () => {
+        // Here we need to remove the listener to prevent memory
+        // leaks due to many event listeners stacking up.
+        this.$electron.ipcRenderer.removeAllListeners('clearAllCredentials')
         document.getElementById('saveAccountData').setAttribute('disabled', true)
         // Only delete these, since we have other settings.
         store.set('toggl-api-key', '')
