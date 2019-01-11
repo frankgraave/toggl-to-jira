@@ -4,7 +4,7 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Account Sredentials
+            Authentication Credentials
           </h1>
           <h2 class="subtitle">
             Set your Jira and Toggl authentication methods.
@@ -88,12 +88,13 @@
 
           </div> <!-- End of first column -->
 
-          <template v-if="togglApiKey === '' && atlassianApiKey === ''">
+          <template v-if="!togglApiKey">
             <div class="column is-5">
-              <article class="message is-dark">
+              <label class="label">&nbsp;</label>
+              <article class="message is-warning is-small">
                 <div class="message-header">Note</div>
                 <div class="message-body">
-                  Before using this, please make sure you've set both your credentials <strong>and</strong> API key(s) correctly. Also check out the Settings and make sure you adjust these to your needs. Happy logging!
+                  Please make sure you've set both your credentials <strong>and</strong> API key(s) correctly. Also check out the Settings and make sure you adjust these to your needs. Happy logging!
                 </div>
               </article>
             </div> <!-- End of second column -->
@@ -113,10 +114,10 @@
     name: 'index',
     data () {
       return {
-        togglApiKey: store.get('toggl-api-key'),
-        jiraName: store.get('jira-name'),
-        jiraPass: store.get('jira-pass'),
-        atlassianApiKey: store.get('atlassian-api-key'),
+        togglApiKey: store.get('toggl-api-key') ? store.get('toggl-api-key') : '',
+        jiraName: store.get('jira-name') ? store.get('jira-name') : '',
+        jiraPass: store.get('jira-pass') ? store.get('jira-pass') : '',
+        atlassianApiKey: store.get('atlassian-api-key') ? store.get('atlassian-api-key') : '',
         jiraAuthType: store.get('jira-auth-type') ? store.get('jira-auth-type') : 'Basic Auth'
       }
     },
@@ -134,7 +135,7 @@
         this.clearInputs()
         setTimeout(function () {
           document.getElementById('saveAccountData').removeAttribute('disabled')
-        }, 300)
+        }, 500)
       })
     },
     watch: {

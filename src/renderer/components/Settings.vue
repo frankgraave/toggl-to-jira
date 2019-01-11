@@ -14,35 +14,17 @@
     </section>
     <section class="section">
       <div class="container">
-        <!--<h4 class="title">Settings</h4>-->
         <div class="columns">
           <div class="column is-5">
-            <!--Container oid?-->
             <!--Column 1 - Field 1-->
-            <!--<div class="field">-->
-              <!--<label class="label">Current used Jira Board</label>-->
-              <!--<div class="control">-->
-                <!--<input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" disabled>-->
-              <!--</div>-->
-              <!--<p class="help"><em>Note: this URL is the one that's being used for the REST API calls. Adjust this URL in the <router-link to="/jira-board-settings">Jira Boards</router-link> Settings.</em></p>-->
-            <!--</div>-->
             <div class="field">
               <label class="label">Current used Jira Board</label>
-              <div class="control has-icons-left">
-                <div class="select">
-                  <select>
-                    <option>https://jira.goalgorilla.com/rest/api</option>
-                    <option>https://jira.goalgorilla.com/rest/api</option>
-                    <option>https://jira.goalgorilla.com/rest/api</option>
-                  </select>
-                </div>
-                <p class="help"><em>Note: this URL is the one that's being used for the REST API calls. Adjust this URL in the <router-link to="/jira-board-settings">Jira Boards</router-link> Settings.</em></p>
-                <div class="icon is-small is-left">
-                  <fa :icon="['fab', 'jira']" />
-                </div>
+              <div class="control">
+                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" disabled>
               </div>
+              <p class="help"><em>Note: this URL is the one that's being used for the REST API calls. Adjust this URL in the <router-link to="/jira-board-settings">Jira Boards</router-link> Settings.</em></p>
             </div>
-            <!--Column 1 - Field 1-->
+            <!--Column 1: Field 2-->
             <div class="field">
               <div class="label">Ignore this project</div>
               <div class="field-body">
@@ -62,14 +44,14 @@
                 </div>
               </div>
             </div>
-            <!--Column 1 - Controls-->
+            <!--Column 1: Controls-->
             <!-- TODO: Bind click function with update/loader -->
             <button id="saveSettings" class="button is-dark" v-on:click="saveSettings">
               Save
             </button>
           </div> <!-- End of first column -->
           <div class="column is-5">
-            <!--Column 2 - Field 1-->
+            <!--Column 2: Field 1-->
             <div class="field">
               <label class="label">Logged tag</label>
               <div class="control has-icons-left">
@@ -80,7 +62,7 @@
               </div>
               <p class="help"><em>Note: Case sensitive. After syncing these tickets will be tagged with this value in Toggl.</em></p>
             </div>
-            <!--Column 2 - Field 2-->
+            <!--Column 2: Field 2-->
             <div class="field">
               <label class="label">Ignore tag</label>
               <div class="control has-icons-left">
@@ -107,7 +89,18 @@
     data () {
       return {
         ignoreProjectKey: store.get('ignoreProjectKey'),
-        loggedTag: store.get('loggedTag')
+        loggedTag: store.get('loggedTag'),
+        ignoreTag: store.get('ignoreTag'),
+        jiraUrl: 'https://jira.goalgorilla.com'
+      }
+    },
+    computed: {
+      urls: function () {
+        return this.jiraProjectUrls.filter(function (url) {
+          if (url !== '') {
+            return url
+          }
+        })
       }
     },
     methods: {
@@ -117,6 +110,7 @@
 
         store.set('ignoreProjectKey', this.$refs.ignoreProjectKey.value)
         store.set('loggedTag', this.$refs.loggedTag.value)
+        store.set('ignoreTag', this.$refs.ignoreTag.value)
 
         setTimeout(function () {
           document.getElementById('saveSettings').classList.remove('is-loading')

@@ -21,57 +21,55 @@
     </aside>
 
     <div id="app">
-      <!--<div class="container">-->
-        <nav class="navbar" role="navigation">
-          <div class="level-left">
-            <!-- Local navigation items for /index -->
-            <template v-if="this.$route.path === '/index'">
-              <p class="navbar-item">
-                <router-link to="#">
-                  <span class="icon is-small"><i><fa icon="trash"></fa></i></span>
-                  <span v-on:click="clearCredentials">Clear credentials</span>
-                </router-link>
-              </p>
-            </template>
+      <nav class="navbar" role="navigation">
+        <div class="level-left">
+          <!-- Local navigation items for /index -->
+          <template v-if="this.$route.path === '/index'">
+            <p class="navbar-item">
+              <router-link to="#">
+                <span class="icon is-small"><i><fa icon="trash"></fa></i></span>
+                <span v-on:click="clearCredentials">Clear credentials</span>
+              </router-link>
+            </p>
+          </template>
 
-            <!-- Local navigation items for /timers -->
-            <template v-if="this.$route.path === '/'">
-              <p class="navbar-item">
-                <router-link to="#">
-                  <span class="icon is-small"><i><fa icon="sync-alt"></fa></i></span>
-                  <span v-on:click="">Refresh</span>
-                </router-link>
-                &nbsp;
-                <router-link to="#">
-                  <span class="icon is-small"><i><fa icon="external-link-square-alt"></fa></i></span>
-                  <span v-on:click="">Open Toggl</span>
-                </router-link>
-              </p>
-            </template>
+          <!-- Local navigation items for /timers -->
+          <template v-if="this.$route.path === '/'">
+            <p class="navbar-item">
+              <router-link to="#">
+                <span class="icon is-small"><i><fa icon="sync-alt"></fa></i></span>
+                <span v-on:click="">Refresh</span>
+              </router-link>
+              &nbsp;
+              <router-link to="#">
+                <span class="icon is-small"><i><fa icon="external-link-square-alt"></fa></i></span>
+                <span v-on:click="open('https://toggl.com/app/timer')">Open Toggl</span>
+              </router-link>
+            </p>
+          </template>
 
-            <!-- Local navigation items for /settings -->
-            <template v-if="this.$route.path === '/settings'">
-              <p class="navbar-item">
-                <router-link to="/jira-board-settings">
-                  <span class="icon is-small"><i><fa :icon="['fab', 'jira']" /></i></span>
-                  <span v-on:click="">Jira Boards</span>
-                </router-link>
-              </p>
-            </template>
+          <!-- Local navigation items for /settings -->
+          <template v-if="this.$route.path === '/settings'">
+            <p class="navbar-item">
+              <router-link to="/jira-board-settings">
+                <span class="icon is-small"><i><fa :icon="['fab', 'jira']" /></i></span>
+                <span v-on:click="">Jira Boards</span>
+              </router-link>
+            </p>
+          </template>
 
-            <!-- Local navigation items for /jira-board-settings -->
-            <template v-if="this.$route.path === '/jira-board-settings'">
-              <p class="navbar-item">
-                <router-link to="/settings">
-                  <span class="icon is-small"><i><fa icon="arrow-left"></fa></i></span>
-                  <span v-on:click="">Settings</span>
-                </router-link>
-              </p>
-            </template>
+          <!-- Local navigation items for /jira-board-settings -->
+          <template v-if="this.$route.path === '/jira-board-settings'">
+            <p class="navbar-item">
+              <router-link to="/settings">
+                <span class="icon is-small"><i><fa icon="arrow-left"></fa></i></span>
+                <span v-on:click="">Settings</span>
+              </router-link>
+            </p>
+          </template>
 
-          </div>
-        </nav>
-      <!--</div>-->
+        </div>
+      </nav>
       <router-view></router-view>
     </div>
   </div>
@@ -81,6 +79,9 @@
   export default {
     name: 'toggl-to-jira',
     methods: {
+      open (link) {
+        this.$electron.shell.openExternal(link)
+      },
       clearCredentials () {
         this.$electron.ipcRenderer.send('clearCredentials')
       }
@@ -127,17 +128,8 @@
     height: 65px;
     width: 100%;
   }
-  aside ul li .router-link-exact-active {
-    background-color: #13171c;
-    color: #00adb5;
-    outline: unset;
-    border: unset;
-  }
   aside ul li a.button {
     color: #999999;
-  }
-  aside ul li a.button:active {
-    color: #00adb5 !important;
   }
   aside ul li a.button:visited,
   aside ul li a.button:link {

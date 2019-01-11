@@ -4,7 +4,7 @@
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title">
-                        Jira Board Settings
+                        Jira Project(s) Settings
                     </h1>
                     <h2 class="subtitle">
                         Here you can define multiple Jira installations for if you are working on multiple projects.
@@ -18,9 +18,9 @@
                     <div class="column is-6">
                         <!--Column 1 - Field 1-->
                         <div class="field">
-                            <label class="label">Jira REST API Url(s)</label>
+                            <label class="label">Jira Project Url(s)</label>
                             <div class="control has-icons-left">
-                                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                                <input class="input" type="text" ref="jiraProjectUrl1" v-bind:value="jiraProjectUrl1" placeholder="https://...">
                                 <span class="icon is-small is-left">
                                     <fa :icon="['fab', 'jira']" />
                                 </span>
@@ -28,7 +28,7 @@
                         </div>
                         <div class="field">
                             <div class="control has-icons-left">
-                                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                                <input class="input" type="text" ref="jiraProjectUrl2" v-bind:value="jiraProjectUrl2" placeholder="https://...">
                                 <span class="icon is-small is-left">
                                     <fa :icon="['fab', 'jira']" />
                                 </span>
@@ -36,14 +36,14 @@
                         </div>
                         <div class="field">
                             <div class="control has-icons-left">
-                                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                                <input class="input" type="text" ref="jiraProjectUrl3" v-bind:value="jiraProjectUrl3" placeholder="https://...">
                                 <span class="icon is-small is-left">
                                     <fa :icon="['fab', 'jira']" />
                                 </span>
                             </div>
                         </div>
                         <!--Column 1 - Controls-->
-                        <button id="saveSettings" class="button is-dark" v-on:click="saveSettings">
+                        <button id="saveJiraBoardSettings" class="button is-dark" v-on:click="saveJiraBoardSettings">
                             Save
                         </button>
                     </div> <!-- End of first column -->
@@ -70,44 +70,24 @@
     name: 'jira-board-settings',
     data () {
       return {
-        ignoreProjectKey: store.get('ignoreProjectKey'),
-        loggedTag: store.get('loggedTag')
+        jiraProjectUrl1: store.get('jiraProjectUrl1'),
+        jiraProjectUrl2: store.get('jiraProjectUrl2'),
+        jiraProjectUrl3: store.get('jiraProjectUrl3')
       }
     },
-    mounted () {
-      // When we receive the clearCredentials event that is
-      // emitted from src/renderer/App.vue, we clear the data
-      // as requested.
-      this.$electron.ipcRenderer.on('clearAllSettings', () => {
-        document.getElementById('saveSettings').setAttribute('disabled', true)
-        // Only delete these, since we have other settings.
-        store.set('ignoreProjectKey', '')
-        store.set('loggedTag', '')
-        this.clearInputs()
-        setTimeout(function () {
-          document.getElementById('saveSettings').removeAttribute('disabled')
-        }, 500)
-      })
-    },
     methods: {
-      saveSettings () {
-        document.getElementById('saveSettings').classList.add('is-loading')
-        document.getElementById('saveSettings').classList.add('is-warning')
+      saveJiraBoardSettings () {
+        document.getElementById('saveJiraBoardSettings').classList.add('is-loading')
+        document.getElementById('saveJiraBoardSettings').classList.add('is-warning')
 
-        store.set('ignoreProjectKey', this.$refs.ignoreProjectKey.value)
-        store.set('loggedTag', this.$refs.loggedTag.value)
+        store.set('jiraProjectUrl1', this.$refs.jiraProjectUrl1.value)
+        store.set('jiraProjectUrl2', this.$refs.jiraProjectUrl2.value)
+        store.set('jiraProjectUrl3', this.$refs.jiraProjectUrl3.value)
 
         setTimeout(function () {
-          document.getElementById('saveSettings').classList.remove('is-loading')
-          document.getElementById('saveSettings').classList.remove('is-warning')
+          document.getElementById('saveJiraBoardSettings').classList.remove('is-loading')
+          document.getElementById('saveJiraBoardSettings').classList.remove('is-warning')
         }, 300)
-      },
-      clearInputs () {
-        // When we delete credentials, update it visually.
-        let inputs = document.getElementsByClassName('input')
-        for (var i = 0; i < inputs.length; i++) {
-          inputs[i].value = ''
-        }
       }
     }
   }
