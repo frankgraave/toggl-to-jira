@@ -1,43 +1,52 @@
 <template>
-    <section class="section">
-        <div class="container">
-
-            <h4 class="title">Settings</h4>
-            <div class="columns">
-                <div class="column is-5">
-                    <!--Container oid?-->
-                    <!--Column 1 - Field 1-->
-                    <div class="field">
-                        <label class="label">Your Jira Board</label>
-                        <div class="control">
-                            <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+    <div>
+        <section class="hero is-dark">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">
+                        Jira Board Settings
+                    </h1>
+                    <h2 class="subtitle">
+                        Here you can define multiple Jira installations for if you are working on multiple projects.
+                    </h2>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-7">
+                        <!--Container oid?-->
+                        <!--Column 1 - Field 1-->
+                        <div class="field">
+                            <label class="label">Your Jira Board</label>
+                            <div class="control">
+                                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                            </div>
                         </div>
-                        <p class="help">The URL to your Jira installation.</p>
-                    </div>
-                    <div class="field">
-                        <label class="label">Your Jira Board</label>
-                        <div class="control">
-                            <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                        <div class="field">
+                            <label class="label">Your Jira Board</label>
+                            <div class="control">
+                                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                            </div>
                         </div>
-                        <p class="help">The URL to your Jira installation.</p>
-                    </div>
-                    <div class="field">
-                        <label class="label">Your Jira Board</label>
-                        <div class="control">
-                            <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                        <div class="field">
+                            <label class="label">Your Jira Board</label>
+                            <div class="control">
+                                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" placeholder="https://...">
+                            </div>
                         </div>
-                        <p class="help">The URL to your Jira installation.</p>
-                    </div>
-                    <!--Column 1 - Controls-->
-                    <button id="saveSettings" class="button is-dark" v-on:click="saveSettings">
-                        Save
-                    </button>
-                </div> <!-- End of first column -->
-                <div class="column is-5">
-                </div> <!-- End of second column -->
-            </div> <!-- End of columns -->
-        </div>
-    </section>
+                        <!--Column 1 - Controls-->
+                        <button id="saveSettings" class="button is-dark" v-on:click="saveSettings">
+                            Save
+                        </button>
+                    </div> <!-- End of first column -->
+                    <div class="column is-3">
+                    </div> <!-- End of second column -->
+                </div> <!-- End of columns -->
+            </div>
+        </section>
+    </div>
 </template>
 
 <script>
