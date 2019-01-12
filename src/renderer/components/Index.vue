@@ -37,10 +37,10 @@
                         <input id="jira-auth-basic" type="radio" value="Basic Auth" v-model="jiraAuthType">
                         Basic Auth
                       </label>
-                      <label class="radio">
-                        <input id="jira-auth-api" type="radio" value="API Key" v-model="jiraAuthType">
-                        API Key
-                      </label>
+                      <!--<label class="radio" disabled>-->
+                        <!--<input id="jira-auth-api" type="radio" value="API Key" v-model="jiraAuthType" disabled>-->
+                        <!--API Key-->
+                      <!--</label>-->
                     </div>
                   </div>
                 </div>
@@ -122,10 +122,10 @@
       }
     },
     mounted () {
-      this.$electron.ipcRenderer.on('clearAllCredentials', () => {
-        // Here we need to remove the listener to prevent memory
-        // leaks due to many event listeners stacking up.
-        this.$electron.ipcRenderer.removeAllListeners('clearAllCredentials')
+      // Each time the Index.vue is mounted, there's an new listener
+      // created. Therefore we need to remove all listeners first.
+      this.$electron.ipcRenderer.removeAllListeners('clearAllCredentials')
+      this.$electron.ipcRenderer.once('clearAllCredentials', () => {
         document.getElementById('saveAccountData').setAttribute('disabled', true)
         // Only delete these, since we have other settings.
         store.set('toggl-api-key', '')

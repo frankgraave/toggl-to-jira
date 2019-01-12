@@ -67,7 +67,6 @@
               </router-link>
             </p>
           </template>
-
         </div>
       </nav>
       <router-view></router-view>

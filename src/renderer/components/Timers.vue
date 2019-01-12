@@ -32,11 +32,11 @@
         <table class="table is-fullwidth is-striped">
           <thead>
             <tr>
-              <th width="9%">Ticket</th>
-              <th width="20%">Description</th>
+              <th width="10%">Ticket</th>
+              <th width="19%">Description</th>
               <th width="5%">Duration</th>
               <th width="4%">Date</th>
-              <th width="8%">Actions</th>
+              <th width="8%">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -51,7 +51,7 @@
                     <span v-on:click="open(jiraUrl + '/browse/' + value.ticket)">
                       <fa icon="external-link-square-alt"></fa>
                     </span>
-                  </router-link>
+                  </router-link>&nbsp;
                   {{ value.ticket }}
                 </td>
               </template>
@@ -65,7 +65,7 @@
                   <span id="logEntry" class="button is-success is-small" v-on:click="logEntry(value)"><fa :icon="['fas', 'arrow-right']" /></span>
                 </template>
                 <template v-else>
-                  <span class="button is-danger is-small"><fa :icon="['fas', 'exclamation-circle']" /></span>&nbsp;&nbsp;<span id="ignoreEntry" class="button is-warning is-small" v-on:click="ignoreEntry(value)"><fa :icon="['fas', 'archive']" /></span>
+                  <span id="ignoreEntry" class="button is-warning is-small" v-on:click="ignoreEntry(value)"><fa :icon="['fas', 'archive']" /></span>
                 </template>
               </td>
             </tr>
@@ -97,14 +97,13 @@
       }
     },
     mounted () {
-      // Once mounted, get the data.
+      // Once the Timers.vue is mounted, get the data.
       this.getTogglData()
-      // On the event 'getTogglTimeEntries', get the data.
+      // Each time the Timers.vue is mounted, there's an new listener
+      // created. Therefore we need to remove all listeners first.
+      this.$electron.ipcRenderer.removeAllListeners('getTogglTimeEntries')
       this.$electron.ipcRenderer.on('getTogglTimeEntries', () => {
-        // Here we need to remove the listener to prevent memory
-        // leaks due to many event listeners stacking up.
-        this.$electron.ipcRenderer.removeAllListeners('getTogglTimeEntries')
-        // Get the data.
+        // Get the data on request.
         this.getTogglData()
       })
     },
@@ -113,7 +112,7 @@
         this.$electron.shell.openExternal(link)
       },
       // Get the worklogs through the Toggl API.
-      getTogglData: function (e) {
+      getTogglData: function () {
         // Show that we are trying to fetch the timers.
         this.statusMessage = 'Loading your Toggl time entries...'
         let toggl = this
@@ -128,7 +127,6 @@
             // We've got our result, so we hide the statusMessage.
             toggl.statusMessage = ''
             toggl.timeEntries = response.data.reverse()
-            console.log(toggl.timeEntries)
             // Function to only get entries that met custom
             // criteria from Settings.vue.
             toggl.setEntryProperties(toggl.timeEntries)
@@ -138,9 +136,8 @@
           })
         }
       },
-      // Manipulate the data and only get what we need
-      // store it in a new array so we can populate
-      // our table with those entries.
+      // Manipulate the data and only get what we need store it in
+      // a new array so we can populate our table with those entries.
       setEntryProperties: function (data) {
         // For global vars.
         let togglTimers = this
@@ -169,9 +166,11 @@
 
               togglTimers.untagged.push(entry)
             }
+          // If we can't match the ticket, check if it should be ignored.
           } else if (!match) {
             if (entry.hasOwnProperty('tags') && Object.values(entry.tags).includes(this.ignoreTag)) {
               togglTimers.tagged.push(entry)
+            // No match? Don't ignore? Then it's an UFO ticket.
             } else {
               // No ticket number found.
               entry['ticket'] = 'Unknown Ticket!'
@@ -195,7 +194,7 @@
     text-overflow: ellipsis;
   }
   .table td {
-    font-size: 15px;
+    font-size: 16px;
     vertical-align: middle !important;
   }
   .table td a {
@@ -204,8 +203,11 @@
   .table td a:hover {
     color: #00adb5;
   }
-
   span.unknown-ticket strong {
     color: #ff3860;
+  }
+  #ignoreEntry,
+  #logEntry {
+    margin-left: 10px;
   }
 </style>
