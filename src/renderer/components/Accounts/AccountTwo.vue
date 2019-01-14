@@ -4,10 +4,10 @@
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title">
-                        Account <strong>One</strong>
+                        Account <strong>Two</strong>
                     </h1>
                     <h2 class="subtitle">
-                        Set credentials for Account One.
+                        Set credentials for Account Two.
                     </h2>
                 </div>
             </div>
@@ -88,7 +88,7 @@
   const store = new Store()
 
   export default {
-    name: 'account-one',
+    name: 'account-two',
     data () {
       return {
         jiraUrl: store.get('jiraUrl') ? store.get('jiraUrl') : '',

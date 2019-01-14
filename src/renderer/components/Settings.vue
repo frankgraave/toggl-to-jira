@@ -92,6 +92,8 @@
 </template>
 
 <script>
+  import $ from 'jquery'
+
   const Store = require('electron-store')
   const store = new Store()
 
@@ -111,8 +113,8 @@
         this.$electron.shell.openExternal(link)
       },
       saveSettings () {
-        document.getElementById('saveSettings').classList.add('is-loading')
-        document.getElementById('saveSettings').classList.add('is-warning')
+        $('#spinner').fadeIn()
+        document.getElementById('saveSettings').setAttribute('disabled', true)
 
         store.set('togglApiKey', this.$refs.togglApiKey.value)
         store.set('ignoreProjectKey', this.$refs.ignoreProjectKey.value)
@@ -120,9 +122,9 @@
         store.set('ignoreTag', this.$refs.ignoreTag.value)
 
         setTimeout(function () {
-          document.getElementById('saveSettings').classList.remove('is-loading')
-          document.getElementById('saveSettings').classList.remove('is-warning')
-        }, 300)
+          document.getElementById('saveSettings').removeAttribute('disabled')
+          $('#spinner').fadeOut()
+        }, 500)
       }
     }
   }

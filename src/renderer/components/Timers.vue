@@ -17,15 +17,6 @@
         </div>
       </article>
     </template>
-    <!--Show if we have no data-->
-    <template v-else-if="untagged.length === 0 && statusMessage.length === 0">
-      <article class="message is-success">
-        <div class="message-header">No entries</div>
-        <div class="message-body">
-          If you expect entries, check your <router-link to="/settings">settings</router-link>. Otherwise, great job on logging all your hours!
-        </div>
-      </article>
-    </template>
     <!--Show default-->
     <template v-else>
       <section class="section is-paddingless">
@@ -114,12 +105,14 @@
     },
     mounted () {
       // Once the Timers.vue is mounted, get the data.
+      this.untagged = []
       this.getTogglData()
       // Each time the Timers.vue is mounted, there's an new listener
       // created. Therefore we need to remove all listeners first.
       this.$electron.ipcRenderer.removeAllListeners('getTogglTimeEntries')
       this.$electron.ipcRenderer.on('getTogglTimeEntries', () => {
         // Get the data on request.
+        this.untagged = []
         this.getTogglData()
       })
     },
@@ -130,7 +123,6 @@
       },
       // Get the worklogs through the Toggl API.
       getTogglData: function () {
-        this.untagged = []
         $('#spinner').fadeIn()
         let toggl = this
         if (this.togglApiKey !== '') {
@@ -178,7 +170,6 @@
               let desc = entry['description'].replace(match[0], '')
               desc = desc.replace(/- /, '')
               entry['description'] = desc
-
               togglTimers.untagged.push(entry)
             }
           // If we can't match the ticket, check if it should be ignored.

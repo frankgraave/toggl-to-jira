@@ -16,6 +16,11 @@ export default new Router({
       component: require('@/components/Accounts/AccountOne').default
     },
     {
+      path: '/accounts-overview/account-two',
+      name: 'account-two',
+      component: require('@/components/Accounts/AccountTwo').default
+    },
+    {
       path: '/',
       name: 'timers',
       component: require('@/components/Timers').default

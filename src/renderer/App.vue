@@ -61,6 +61,19 @@
                 <span class="icon is-small"><i><fa icon="user"></fa></i></span>
                 <span v-on:click="">Account One</span>
               </router-link>
+              <router-link to="/accounts-overview/account-two">
+                <span class="icon is-small"><i><fa icon="user"></fa></i></span>
+                <span v-on:click="">Account Two</span>
+              </router-link>
+            </p>
+          </template>
+
+          <template v-if="this.$route.path === '/accounts-overview/account-one' || this.$route.path === '/accounts-overview/account-two'">
+            <p class="navbar-item">
+              <router-link to="/accounts-overview">
+                <span class="icon is-small"><i><fa icon="arrow-left"></fa></i></span>
+                <span v-on:click="">Account Overview</span>
+              </router-link>
             </p>
           </template>
         </div>
