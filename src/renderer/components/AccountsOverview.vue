@@ -17,6 +17,17 @@
 
         <div class="columns">
           <div class="column is-6">
+            <label class="label">Choose account</label>
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="answer">
+                {{ jiraUrl }}
+              </label><br/>
+              <label class="radio">
+                <input type="radio" name="answer">
+                n/a
+              </label>
+            </div>
           </div> <!-- End of first column -->
 
           <div class="column is-5">
