@@ -17,6 +17,13 @@
             <span class="icon"><i><fa icon="cog"></fa></i></span>
           </router-link>
         </li>
+        <li>
+          <spinner id="spinner"
+            :animation-duration="1100"
+            :size="40"
+            color="#00adb5"
+          />
+        </li>
       </ul>
     </aside>
 
@@ -64,6 +71,11 @@
 </template>
 
 <script>
+  import $ from 'jquery'
+
+  // Hide our spinner by default.
+  $('#spinner').hide()
+
   export default {
     name: 'toggl-to-jira',
     methods: {
@@ -89,6 +101,12 @@
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.2);
     padding: 0.5rem 0;
     left: 70px;
+  }
+  #spinner {
+    bottom: 15px;
+    left: 16px;
+    position: absolute;
+    display: none;
   }
   p.navbar-item a span:after,
   p.navbar-item a:after,

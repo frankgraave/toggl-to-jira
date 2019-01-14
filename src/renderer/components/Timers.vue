@@ -77,10 +77,11 @@
 </template>
 
 <script>
-  const Store = require('electron-store')
-  const store = new Store()
-  const axios = require('axios')
-  const JiraClient = require('jira-connector')
+  import $ from 'jquery'
+const Store = require('electron-store')
+const store = new Store()
+const axios = require('axios')
+const JiraClient = require('jira-connector')
 
   let base64 = btoa(store.get('jira-name') + ':' + store.get('jira-pass'))
 
@@ -192,10 +193,13 @@
         }
       },
       getIssue () {
+        // Show spinner.
+        $('#spinner').show()
         jira.issue.getIssue({
           issueKey: 'BEN-25745'
         }).then(function (response) {
           console.log(response)
+          $('#spinner').hide()
         }).catch(function (error) {
           console.log(error)
         })

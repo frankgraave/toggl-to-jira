@@ -14,6 +14,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+// Epic spinners.
+import { OrbitSpinner } from 'epic-spinners'
 // Add our custom packages to the prototype chain.
 Object.defineProperty(Vue.prototype, '$timeTo', { value: timeTo })
 Object.defineProperty(Vue.prototype, '$dateFns', { value: dateFns })
@@ -21,6 +23,7 @@ Object.defineProperty(Vue.prototype, '$dateFns', { value: dateFns })
 library.add(fas, fab)
 // Add it as a global component.
 Vue.component('fa', FontAwesomeIcon)
+Vue.component('spinner', OrbitSpinner)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
