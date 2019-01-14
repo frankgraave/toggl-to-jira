@@ -26,22 +26,19 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="field">
-                            <div class="control has-icons-left">
-                                <input class="input" type="text" ref="jiraProjectUrl2" v-bind:value="jiraProjectUrl2" placeholder="https://...">
-                                <span class="icon is-small is-left">
-                                    <fa :icon="['fab', 'jira']" />
-                                </span>
-                            </div>
+
+                        <div class="field has-addons">
+                            <p class="control">
+                                <a class="button is-static">
+                                    https://
+                                </a>
+                            </p>
+                            <p class="control">
+                                <input class="input" type="text" placeholder="jira.website.com">
+                            </p>
+                            <p class="help"><em>Note: Case sensitive. Simply add e.g. jira.website.com and ur done!</em></p>
                         </div>
-                        <div class="field">
-                            <div class="control has-icons-left">
-                                <input class="input" type="text" ref="jiraProjectUrl3" v-bind:value="jiraProjectUrl3" placeholder="https://...">
-                                <span class="icon is-small is-left">
-                                    <fa :icon="['fab', 'jira']" />
-                                </span>
-                            </div>
-                        </div>
+
                         <!--Column 1 - Controls-->
                         <button id="saveJiraBoardSettings" class="button is-dark" v-on:click="saveJiraBoardSettings">
                             Save

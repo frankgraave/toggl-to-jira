@@ -124,9 +124,10 @@ const JiraClient = require('jira-connector')
       },
       // Get the worklogs through the Toggl API.
       getTogglData: function () {
+        // Empty the previous data.
+        this.untagged = []
         // Show that we are trying to fetch the timers.
         $('#spinner').fadeIn()
-        this.statusMessage = 'Loading your Toggl time entries...'
         let toggl = this
         if (this.togglApiKey !== '') {
           axios.get('https://www.toggl.com/api/v8/time_entries', {

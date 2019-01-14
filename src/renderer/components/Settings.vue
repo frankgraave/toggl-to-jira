@@ -95,14 +95,12 @@
   const Store = require('electron-store')
   const store = new Store()
 
-  store.set('jiraUrl', 'jira.goalgorilla.com')
-
   export default {
     name: 'settings',
     data () {
       return {
         ignoreProjectKey: store.get('ignoreProjectKey'),
-        togglApiKey: store.get('toggl-api-key') ? store.get('toggl-api-key') : '',
+        togglApiKey: store.get('togglApiKey') ? store.get('togglApiKey') : '',
         loggedTag: store.get('loggedTag'),
         ignoreTag: store.get('ignoreTag'),
         jiraUrl: store.get('jiraUrl')

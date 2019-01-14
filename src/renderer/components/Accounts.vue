@@ -19,52 +19,41 @@
           <div class="column is-6">
 
             <div class="field">
-              <label class="label">Jira Auth method</label>
+              <label class="label">Jira URL</label>
               <div class="field-body">
-                  <div class="field">
-                    <div class="control">
-                      <label class="radio">
-                        <input id="jira-auth-basic" type="radio" value="Basic Auth" v-model="jiraAuthType">
-                        Basic Auth
-                      </label>
-                    </div>
-                  </div>
+                <div class="field has-addons">
+                  <p class="control">
+                    <a class="button is-static">
+                      https://
+                    </a>
+                  </p>
+                  <p class="control">
+                    <input class="input" type="text" ref="jiraUrl" v-model="jiraUrl" placeholder="jira.website.com">
+                  </p>
                 </div>
+              </div>
+              <p class="help"><em>Simply add e.g. jira.website.com and you are good to go!</em></p>
             </div>
 
-            <template v-if="jiraAuthType === 'Basic Auth'">
-              <div class="field">
-                <label class="label">Jira username</label>
-                <div class="control has-icons-left">
-                  <input class="input" type="text" ref="jiraName" v-model="jiraName" placeholder="Jira username">
-                  <span class="icon is-small is-left">
-                    <fa :icon="['fab', 'jira']" />
-                  </span>
-                </div>
-              </div>
-
-              <div class="field">
-                <label class="label">Jira password</label>
-                <div class="control has-icons-left">
-                  <input class="input" type="password" ref="jiraPass" v-model="jiraPass" placeholder="Jira password">
-                  <span class="icon is-small is-left">
-                    <fa :icon="['fas', 'key']" />
-                  </span>
-                </div>
-              </div>
-            </template>
-
-            <template v-else>
-              <div class="field">
-                <label class="label">Atlassian API Key</label>
-                <div class="control has-icons-left">
-                  <input class="input" type="text" ref="atlassianApiKey" v-model="atlassianApiKey" placeholder="Atlassian ID API Key">
-                  <span class="icon is-small is-left">
-                  <fa :icon="['fab', 'atlassian']" />
+            <div class="field">
+              <label class="label">Jira username</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" ref="jiraName" v-model="jiraName" placeholder="Jira username">
+                <span class="icon is-small is-left">
+                  <fa :icon="['fab', 'jira']" />
                 </span>
-                </div>
               </div>
-            </template>
+            </div>
+
+            <div class="field">
+              <label class="label">Jira password</label>
+              <div class="control has-icons-left">
+                <input class="input" type="password" ref="jiraPass" v-model="jiraPass" placeholder="Jira password">
+                <span class="icon is-small is-left">
+                  <fa :icon="['fas', 'key']" />
+                </span>
+              </div>
+            </div>
 
             <div class="field is-grouped">
               <div class="control">
@@ -97,14 +86,13 @@
   const store = new Store()
 
   export default {
-    name: 'accounts',
+    name: 'account1',
     data () {
       return {
-        togglApiKey: store.get('toggl-api-key') ? store.get('toggl-api-key') : '',
-        jiraName: store.get('jira-name') ? store.get('jira-name') : '',
-        jiraPass: store.get('jira-pass') ? store.get('jira-pass') : '',
-        atlassianApiKey: store.get('atlassian-api-key') ? store.get('atlassian-api-key') : '',
-        jiraAuthType: store.get('jira-auth-type') ? store.get('jira-auth-type') : 'Basic Auth'
+        jiraUrl: store.get('jiraUrl') ? store.get('jiraUrl') : '',
+        jiraName: store.get('jiraName') ? store.get('jiraName') : '',
+        jiraPass: store.get('jiraPass') ? store.get('jiraPass') : '',
+        togglApiKey: store.get('togglApiKey') ? store.get('togglApiKey') : ''
       }
     },
     mounted () {
@@ -114,33 +102,25 @@
       this.$electron.ipcRenderer.once('clearAllCredentials', () => {
         document.getElementById('saveAccountData').setAttribute('disabled', true)
         // Only delete these, since we have other settings.
-        store.set('toggl-api-key', '')
-        store.set('jira-name', '')
-        store.set('jira-pass', '')
-        store.set('atlassian-api-key', '')
+        store.get('jiraUrl')
+        store.set('jiraName', '')
+        store.set('jiraPass', '')
+        store.set('togglApiKey', '')
         this.clearInputs()
         setTimeout(function () {
           document.getElementById('saveAccountData').removeAttribute('disabled')
         }, 500)
       })
     },
-    watch: {
-      jiraAuthType (value) {
-        store.set('jira-auth-type', value)
-      }
-    },
     methods: {
       saveAccountData () {
         document.getElementById('saveAccountData').classList.add('is-loading')
         document.getElementById('saveAccountData').classList.add('is-warning')
 
-        store.set('toggl-api-key', this.$refs.togglApiKey.value)
-        if (this.jiraAuthType === 'Basic Auth') {
-          store.set('jira-name', this.$refs.jiraName.value)
-          store.set('jira-pass', this.$refs.jiraPass.value)
-        } else if (this.jiraAuthType === 'API Key') {
-          store.set('atlassian-api-key', this.$refs.atlassianApiKey.value)
-        }
+        store.set('jiraUrl', this.$refs.jiraUrl.value)
+        store.set('jiraName', this.$refs.jiraName.value)
+        store.set('jiraPass', this.$refs.jiraPass.value)
+        store.set('togglApiKey', this.$refs.togglApiKey.value)
 
         setTimeout(function () {
           document.getElementById('saveAccountData').classList.remove('is-loading')
