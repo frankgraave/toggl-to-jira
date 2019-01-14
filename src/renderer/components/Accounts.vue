@@ -19,16 +19,6 @@
           <div class="column is-6">
 
             <div class="field">
-              <label class="label">Toggl API Key</label>
-              <div class="control has-icons-left">
-                <input class="input" type="text" ref="togglApiKey" v-model="togglApiKey" placeholder="Toggl API Key">
-                <span class="icon is-small is-left">
-                  <fa :icon="['fas', 'power-off']" />
-                </span>
-              </div>
-            </div>
-
-            <div class="field">
               <label class="label">Jira Auth method</label>
               <div class="field-body">
                   <div class="field">
@@ -37,10 +27,6 @@
                         <input id="jira-auth-basic" type="radio" value="Basic Auth" v-model="jiraAuthType">
                         Basic Auth
                       </label>
-                      <!--<label class="radio" disabled>-->
-                        <!--<input id="jira-auth-api" type="radio" value="API Key" v-model="jiraAuthType" disabled>-->
-                        <!--API Key-->
-                      <!--</label>-->
                     </div>
                   </div>
                 </div>
@@ -94,7 +80,7 @@
               <article class="message is-warning is-small">
                 <div class="message-header">Note</div>
                 <div class="message-body">
-                  Please make sure you've set both your credentials <strong>and</strong> API key(s) correctly. Also check out the Settings and make sure you adjust these to your needs. Happy logging!
+                  It looks like you haven't set up your Toggl API Key yet. Please configure it in the <router-link to="/settings">settings</router-link>.
                 </div>
               </article>
             </div> <!-- End of second column -->

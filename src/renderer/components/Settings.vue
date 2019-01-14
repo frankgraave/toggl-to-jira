@@ -53,6 +53,17 @@
           <div class="column is-5">
             <!--Column 2: Field 1-->
             <div class="field">
+              <label class="label">Toggl API Key</label>
+              <div class="control has-icons-left">
+                <input class="input" type="text" ref="togglApiKey" v-model="togglApiKey" placeholder="Toggl API Key">
+                <span class="icon is-small is-left">
+                  <fa :icon="['fas', 'power-off']" />
+                </span>
+              </div>
+              <p class="help"><em>Used for getting your Toggl time entries. Get it <router-link to="#"><span v-on:click="open('https://www.toggl.com/app/profile')">here</span></router-link>.</em></p>
+            </div>
+            <!--Column 2: Field 2-->
+            <div class="field">
               <label class="label">Logged tag</label>
               <div class="control has-icons-left">
                 <input class="input" type="text" ref="loggedTag" v-bind:value="loggedTag" placeholder="e.g. logged">
@@ -62,7 +73,7 @@
               </div>
               <p class="help"><em>Note: Case sensitive. After syncing these tickets will be tagged with this value in Toggl.</em></p>
             </div>
-            <!--Column 2: Field 2-->
+            <!--Column 2: Field 3-->
             <div class="field">
               <label class="label">Ignore tag</label>
               <div class="control has-icons-left">
@@ -91,12 +102,16 @@
     data () {
       return {
         ignoreProjectKey: store.get('ignoreProjectKey'),
+        togglApiKey: store.get('toggl-api-key') ? store.get('toggl-api-key') : '',
         loggedTag: store.get('loggedTag'),
         ignoreTag: store.get('ignoreTag'),
         jiraUrl: store.get('jiraUrl')
       }
     },
     methods: {
+      open (link) {
+        this.$electron.shell.openExternal(link)
+      },
       saveSettings () {
         document.getElementById('saveSettings').classList.add('is-loading')
         document.getElementById('saveSettings').classList.add('is-warning')
