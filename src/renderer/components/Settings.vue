@@ -18,11 +18,11 @@
           <div class="column is-5">
             <!--Column 1 - Field 1-->
             <div class="field">
-              <label class="label">Current used Jira Board</label>
+              <label class="label">Current used Account</label>
               <div class="control">
                 <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" disabled>
               </div>
-              <p class="help"><em>Note: this URL is the one that's being used for the REST API calls. Adjust this URL in the <router-link to="/jira-board-settings">Jira Boards</router-link> Settings.</em></p>
+              <p class="help"><em>Note: this account is being used for the REST API calls. Adjust the active account in the <router-link to="/accounts">Accounts</router-link> settings page.</em></p>
             </div>
             <!--Column 1: Field 2-->
             <div class="field">
