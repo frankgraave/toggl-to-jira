@@ -3,7 +3,7 @@
     <aside class="menu is-pulled-left">
       <ul class="menu-list">
         <li>
-          <router-link class="button is-medium" to="/accounts">
+          <router-link class="button is-medium" to="/accounts-overview">
             <span class="icon"><i><fa icon="user-circle"></fa></i></span>
           </router-link>
         </li>
@@ -47,19 +47,19 @@
           <!-- Local navigation items for /settings -->
           <template v-if="this.$route.path === '/settings'">
             <p class="navbar-item">
-              <router-link to="/accounts">
+              <router-link to="/accounts-overview">
                 <span class="icon is-small"><i><fa :icon="['fas', 'users']" /></i></span>
-                <span v-on:click="">Accounts</span>
+                <span v-on:click="">Accounts Overview</span>
               </router-link>
             </p>
           </template>
 
-          <!-- Local navigation items for /jira-board-settings -->
-          <template v-if="this.$route.path === '/accounts'">
+          <!-- Local navigation items for /accounts -->
+          <template v-if="this.$route.path === '/accounts-overview'">
             <p class="navbar-item">
-              <router-link to="/settings">
-                <span class="icon is-small"><i><fa icon="arrow-left"></fa></i></span>
-                <span v-on:click="">Settings</span>
+              <router-link to="/accounts-overview/account-one">
+                <span class="icon is-small"><i><fa icon="user"></fa></i></span>
+                <span v-on:click="">Account One</span>
               </router-link>
             </p>
           </template>

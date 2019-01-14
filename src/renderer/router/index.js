@@ -6,9 +6,14 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/accounts',
-      name: 'accounts',
-      component: require('@/components/Accounts').default
+      path: '/accounts-overview',
+      name: 'accounts-overview',
+      component: require('@/components/AccountsOverview').default
+    },
+    {
+      path: '/accounts-overview/account-one',
+      name: 'account-one',
+      component: require('@/components/Accounts/AccountOne').default
     },
     {
       path: '/',
