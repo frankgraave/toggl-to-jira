@@ -116,7 +116,6 @@ const JiraClient = require('jira-connector')
       this.$electron.ipcRenderer.on('getTogglTimeEntries', () => {
         // Get the data on request.
         this.getTogglData()
-        this.getIssue()
       })
     },
     methods: {
@@ -126,6 +125,7 @@ const JiraClient = require('jira-connector')
       // Get the worklogs through the Toggl API.
       getTogglData: function () {
         // Show that we are trying to fetch the timers.
+        $('#spinner').fadeIn()
         this.statusMessage = 'Loading your Toggl time entries...'
         let toggl = this
         if (this.togglApiKey !== '') {
@@ -137,6 +137,7 @@ const JiraClient = require('jira-connector')
             }
           }).then(function (response) {
             // We've got our result, so we hide the statusMessage.
+            $('#spinner').fadeOut()
             toggl.statusMessage = ''
             toggl.timeEntries = response.data.reverse()
             // Function to only get entries that met custom
@@ -145,6 +146,7 @@ const JiraClient = require('jira-connector')
           }).catch(function (error) {
             toggl.statusMessage = 'Something went wrong :('
             console.log('Error: ' + error)
+            $('#spinner').fadeOut()
           })
         }
       },
@@ -194,12 +196,12 @@ const JiraClient = require('jira-connector')
       },
       getIssue () {
         // Show spinner.
-        $('#spinner').show()
+        $('#spinner').fadeIn()
         jira.issue.getIssue({
           issueKey: 'BEN-25745'
         }).then(function (response) {
           console.log(response)
-          $('#spinner').hide()
+          $('#spinner').fadeOut()
         }).catch(function (error) {
           console.log(error)
         })
