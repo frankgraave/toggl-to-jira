@@ -80,6 +80,16 @@
   const Store = require('electron-store')
   const store = new Store()
   const axios = require('axios')
+  const JiraClient = require('jira-connector')
+
+  let base64 = btoa(store.get('jira-name') + ':' + store.get('jira-pass'))
+
+  let jira = new JiraClient({
+    host: 'brixcrm.atlassian.net',
+    basic_auth: {
+      base64: base64
+    }
+  })
 
   export default {
     name: 'timers',
@@ -105,6 +115,7 @@
       this.$electron.ipcRenderer.on('getTogglTimeEntries', () => {
         // Get the data on request.
         this.getTogglData()
+        this.getIssue()
       })
     },
     methods: {
@@ -179,6 +190,15 @@
             }
           }
         }
+      },
+      getIssue () {
+        jira.issue.getIssue({
+          issueKey: 'BEN-25745'
+        }).then(function (response) {
+          console.log(response)
+        }).catch(function (error) {
+          console.log(error)
+        })
       }
     }
   }

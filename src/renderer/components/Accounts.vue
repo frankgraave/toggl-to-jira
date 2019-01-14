@@ -111,7 +111,7 @@
   const store = new Store()
 
   export default {
-    name: 'index',
+    name: 'accounts',
     data () {
       return {
         togglApiKey: store.get('toggl-api-key') ? store.get('toggl-api-key') : '',

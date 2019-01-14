@@ -6207,6 +6207,14 @@ istanbul@^0.4.0:
     which "^1.1.1"
     wordwrap "^1.0.0"
 
+jira-connector@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/jira-connector/-/jira-connector-2.10.0.tgz#5468a6c7603339ba6f55ff20cc55775bd36cf390"
+  integrity sha512-nqRq2iEn0w/shTkM2jubQJfnTZxQvSMdmAkNZFB6eW3hn96MgKuHfQ8/CaGnZACrbqRaFTXhPe85GP+y0pemdA==
+  dependencies:
+    oauth "^0.9.12"
+    request "^2.83.0"
+
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.0.tgz#42255ba183ab67ce59a0dee640afdc00ab5ae93e"
@@ -7712,6 +7720,11 @@ oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
   integrity sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==
+
+oauth@^0.9.12:
+  version "0.9.15"
+  resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.15.tgz#bd1fefaf686c96b75475aed5196412ff60cfb9c1"
+  integrity sha1-vR/vr2hslrdUda7VGWQS/2DPucE=
 
 object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"

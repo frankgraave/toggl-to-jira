@@ -84,7 +84,7 @@
   const Store = require('electron-store')
   const store = new Store()
 
-  store.set('jiraUrl', 'https://jira.goalgorilla.com')
+  store.set('jiraUrl', 'jira.goalgorilla.com')
 
   export default {
     name: 'settings',
