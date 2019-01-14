@@ -102,12 +102,6 @@
     padding: 0.5rem 0;
     left: 70px;
   }
-  #spinner {
-    bottom: 15px;
-    left: 16px;
-    position: absolute;
-    display: none;
-  }
   p.navbar-item a span:after,
   p.navbar-item a:after,
   p.navbar-item a span.icon {
@@ -158,6 +152,12 @@
     border: unset;
   }
 
+  #spinner {
+    bottom: 16px;
+    left: 16px;
+    position: absolute;
+    display: none;
+  }
   .orbit-spinner, .orbit-spinner * {
     box-sizing: border-box;
   }
@@ -180,21 +180,21 @@
   .orbit-spinner .orbit:nth-child(1) {
     left: 0%;
     top: 0%;
-    animation: orbit-spinner-orbit-one-animation 1200ms linear infinite;
+    animation: orbit-spinner-orbit-one-animation 1300ms linear infinite;
     border-bottom: 3px solid #00adb5;
   }
 
   .orbit-spinner .orbit:nth-child(2) {
     right: 0%;
     top: 0%;
-    animation: orbit-spinner-orbit-two-animation 1200ms linear infinite;
+    animation: orbit-spinner-orbit-two-animation 1300ms linear infinite;
     border-right: 3px solid #00adb5;
   }
 
   .orbit-spinner .orbit:nth-child(3) {
     right: 0%;
     bottom: 0%;
-    animation: orbit-spinner-orbit-three-animation 1200ms linear infinite;
+    animation: orbit-spinner-orbit-three-animation 1300ms linear infinite;
     border-top: 3px solid #00adb5;
   }
 

@@ -114,6 +114,7 @@
         document.getElementById('saveSettings').classList.add('is-loading')
         document.getElementById('saveSettings').classList.add('is-warning')
 
+        store.set('togglApiKey', this.$refs.togglApiKey.value)
         store.set('ignoreProjectKey', this.$refs.ignoreProjectKey.value)
         store.set('loggedTag', this.$refs.loggedTag.value)
         store.set('ignoreTag', this.$refs.ignoreTag.value)

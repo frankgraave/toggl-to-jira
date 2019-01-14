@@ -86,7 +86,7 @@
   const store = new Store()
 
   export default {
-    name: 'account1',
+    name: 'accounts',
     data () {
       return {
         jiraUrl: store.get('jiraUrl') ? store.get('jiraUrl') : '',
@@ -102,7 +102,7 @@
       this.$electron.ipcRenderer.once('clearAllCredentials', () => {
         document.getElementById('saveAccountData').setAttribute('disabled', true)
         // Only delete these, since we have other settings.
-        store.get('jiraUrl')
+        store.get('jiraUrl', '')
         store.set('jiraName', '')
         store.set('jiraPass', '')
         store.set('togglApiKey', '')
@@ -120,7 +120,6 @@
         store.set('jiraUrl', this.$refs.jiraUrl.value)
         store.set('jiraName', this.$refs.jiraName.value)
         store.set('jiraPass', this.$refs.jiraPass.value)
-        store.set('togglApiKey', this.$refs.togglApiKey.value)
 
         setTimeout(function () {
           document.getElementById('saveAccountData').classList.remove('is-loading')
