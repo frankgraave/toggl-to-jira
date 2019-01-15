@@ -55,7 +55,9 @@
                         <template v-else>
                             <div class="field is-grouped">
                                 <div class="control">
+                                    <!--TODO: add button to test credentials-->
                                     <button id="saveAccountData" class="button is-dark" v-on:click="saveAccountData">Save</button>
+                                    <!--TODO: add button to test credentials-->
                                 </div>
                             </div>
                         </template>

@@ -111,6 +111,7 @@
     name: 'settings',
     data () {
       return {
+        // TODO: Set interval setting for every 5m/10m/15m.
         ignoreProjectKey: store.get('ignoreProjectKey'),
         togglApiKey: store.get('togglApiKey'),
         loggedTag: store.get('loggedTag'),
