@@ -287,6 +287,7 @@
 <style>
   table {
     table-layout: fixed;
+    box-shadow: 0 8px 16px rgba(15, 15, 15, 0.1);
   }
   td {
     white-space: nowrap;

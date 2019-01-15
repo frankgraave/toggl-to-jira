@@ -55,9 +55,8 @@
             <template v-else>
               <div class="field is-grouped">
                 <div class="control">
-                  <!--TODO: add button to test credentials-->
                   <button id="saveAccountData" class="button is-dark" v-on:click="saveAccountData">Save</button>
-                  <!--TODO: add button to test credentials-->
+                  <button id="testAuthentication" class="button is-dark is-outlined" v-on:click="testAuthentication">Test authentication</button>
                 </div>
               </div>
             </template>
@@ -114,6 +113,31 @@
                   </span>
                 </div>
               </div>
+
+              <template v-if="authSuccess === 'Trying to authenticate...'">
+                <article class="message is-info is-small">
+                  <div class="message-header">Note</div>
+                  <div class="message-body">
+                    {{ authSuccess }}
+                  </div>
+                </article>
+              </template>
+              <template v-if="authSuccess === 'Successfully authenticated!'">
+                <article class="message is-success is-small">
+                  <div class="message-header">Note</div>
+                  <div class="message-body">
+                    {{ authSuccess }}
+                  </div>
+                </article>
+              </template>
+              <template v-if="authSuccess === 'Authentication failed...'">
+                <article class="message is-danger is-small">
+                  <div class="message-header">Note</div>
+                  <div class="message-body">
+                    {{ authSuccess }}
+                  </div>
+                </article>
+              </template>
             </div> <!-- End of second column -->
           </template>
 
@@ -129,6 +153,7 @@
 
   const Store = require('electron-store')
   const store = new Store()
+  const axios = require('axios')
 
   export default {
     name: 'account-one',
@@ -138,28 +163,9 @@
         accountOneJiraUrl: store.get('accountOneJiraUrl') ? store.get('accountOneJiraUrl') : '',
         accountOneJiraUsername: store.get('accountOneJiraUsername') ? store.get('accountOneJiraUsername') : '',
         accountOneJiraPassword: store.get('accountOneJiraPassword') ? store.get('accountOneJiraPassword') : '',
+        authSuccess: '',
         togglApiKey: store.get('togglApiKey') ? store.get('togglApiKey') : ''
       }
-    },
-    mounted () {
-      // Each time the Index.vue is mounted, there's an new listener
-      // created. Therefore we need to remove all listeners first.
-      this.$electron.ipcRenderer.removeAllListeners('clearAllCredentials')
-      this.$electron.ipcRenderer.once('clearAllCredentials', () => {
-        $('#spinner').fadeIn()
-        document.getElementById('saveAccountData').setAttribute('disabled', true)
-        // Only delete these, since we have other settings.
-        store.get('accountOneName', '')
-        store.get('accountOneJiraUrl', '')
-        store.set('accountOneJiraUsername', '')
-        store.set('accountOneJiraPassword', '')
-        store.set('togglApiKey', '')
-        this.clearInputs()
-        setTimeout(function () {
-          document.getElementById('saveAccountData').removeAttribute('disabled')
-          $('#spinner').fadeOut()
-        }, 500)
-      })
     },
     methods: {
       saveAccountData () {
@@ -176,12 +182,42 @@
           $('#spinner').fadeOut()
         }, 500)
       },
-      clearInputs () {
-        // When we delete credentials, update it visually.
-        let inputs = document.getElementsByClassName('input')
-        for (var i = 0; i < inputs.length; i++) {
-          inputs[i].value = ''
-        }
+      testAuthentication () {
+        // Test the credentials to the url.
+        $('#spinner').fadeIn()
+        let auth = this
+        this.authSuccess = 'Trying to authenticate...'
+        axios.post('https://' + this.accountOneJiraUrl + '/rest/auth/1/session',
+          JSON.stringify({username: this.accountOneJiraUsername, password: this.accountOneJiraPassword}),
+          {
+            withCredentials: true,
+            headers: {
+              'Authorization': 'Basic ' + btoa(this.accountOneJiraUsername + ':' + this.accountOneJiraPassword),
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(function (response) {
+            $('#spinner').fadeOut()
+            if (response.status === 200 && response.data.session.length !== '') {
+              auth.authSuccess = 'Successfully authenticated!'
+              auth.removeAuthNote()
+            } else {
+              auth.authSuccess = 'Authentication failed...'
+              auth.removeAuthNote()
+            }
+          })
+          .catch(function (error) {
+            $('#spinner').fadeOut()
+            auth.authSuccess = 'Authentication failed...'
+            auth.removeAuthNote()
+            console.log('Error: ' + error)
+          })
+      },
+      removeAuthNote () {
+        let auth = this
+        setInterval(function () {
+          auth.authSuccess = ''
+        }, 3500)
       }
     }
   }
