@@ -112,7 +112,7 @@
     data () {
       return {
         ignoreProjectKey: store.get('ignoreProjectKey'),
-        togglApiKey: store.get('togglApiKey') ? store.get('togglApiKey') : '',
+        togglApiKey: store.get('togglApiKey'),
         loggedTag: store.get('loggedTag'),
         ignoreTag: store.get('ignoreTag'),
         jiraUrl: store.get('jiraUrl')

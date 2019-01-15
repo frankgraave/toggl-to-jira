@@ -13,7 +13,7 @@
       <article class="message is-warning">
         <div class="message-header">Uh-oh!</div>
         <div class="message-body">
-          You first have to set up your authentication <router-link to="/index">credentials</router-link> first!
+          You first have to set up your <router-link to="/settings">Toggl API Key</router-link> first!
         </div>
       </article>
     </template>
@@ -96,7 +96,7 @@
         tagged: [],
         untagged: [],
         timeEntries: [],
-        togglApiKey: store.get('toggl-api-key'),
+        togglApiKey: store.get('togglApiKey'),
         ignoreProjectKey: store.get('ignoreProjectKey'),
         loggedTag: store.get('loggedTag'),
         ignoreTag: store.get('ignoreTag'),
@@ -123,9 +123,9 @@
       },
       // Get the worklogs through the Toggl API.
       getTogglData: function () {
-        $('#spinner').fadeIn()
         let toggl = this
-        if (this.togglApiKey !== '') {
+        if (this.togglApiKey) {
+          $('#spinner').fadeIn()
           axios.get('https://www.toggl.com/api/v8/time_entries', {
             withCredentials: true,
             headers: {

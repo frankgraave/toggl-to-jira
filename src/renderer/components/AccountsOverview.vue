@@ -16,7 +16,7 @@
       <div class="container">
 
         <div class="columns">
-          <div class="column is-6">
+          <div class="column is-5">
 
             <label class="label">Choose account</label>
             <!--Build check if any account is set anyway-->
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+  import $ from 'jquery'
+
   const Store = require('electron-store')
   const store = new Store()
 
@@ -52,8 +54,6 @@
         activeAccount: store.get('activeAccount') ? store.get('activeAccount') : '',
         jiraUrlOne: store.get('jiraUrlOne') ? store.get('jiraUrlOne') : '',
         jiraUrlTwo: store.get('jiraUrlTwo') ? store.get('jiraUrlTwo') : '',
-        jiraName: store.get('jiraName') ? store.get('jiraName') : '',
-        jiraPass: store.get('jiraPass') ? store.get('jiraPass') : '',
         togglApiKey: store.get('togglApiKey') ? store.get('togglApiKey') : ''
       }
     },
@@ -61,7 +61,11 @@
     },
     methods: {
       saveActiveAccount (value) {
-        store.set('activeAccount', value)
+        $('#spinner').fadeIn()
+        setTimeout(function () {
+          store.set('activeAccount', value)
+          $('#spinner').fadeOut()
+        }, 500)
       }
     }
   }
