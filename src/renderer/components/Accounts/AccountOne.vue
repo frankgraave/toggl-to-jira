@@ -4,10 +4,10 @@
       <div class="hero-body">
         <div class="container">
           <h1 class="title">
-            Account <strong>One</strong>
+            Account <strong>One:</strong> {{ accountOneName }}
           </h1>
           <h2 class="subtitle">
-            Set credentials for Account One.
+            Jira URL and credentials for Account One.
           </h2>
         </div>
       </div>
@@ -56,7 +56,6 @@
               <div class="field is-grouped">
                 <div class="control">
                   <button id="saveAccountData" class="button is-dark" v-on:click="saveAccountData">Save</button>
-                  <button id="testAuthentication" class="button is-dark is-outlined" v-on:click="testAuthentication">Test authentication</button>
                 </div>
               </div>
             </template>
@@ -111,6 +110,13 @@
                   <span class="icon is-small is-left">
                     <fa :icon="['fas', 'key']" />
                   </span>
+                </div>
+                <p class="help"><em>If authentication fails, double check it before retrying.</em></p>
+              </div>
+
+              <div class="field is-grouped">
+                <div class="control">
+                  <button id="testAuthentication" class="button is-dark is-outlined" v-on:click="testAuthentication">Test authentication</button>
                 </div>
               </div>
 

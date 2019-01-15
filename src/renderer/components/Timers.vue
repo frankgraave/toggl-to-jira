@@ -42,9 +42,16 @@
               <template v-else>
                 <td>
                   <router-link to="#">
-                    <span v-on:click="open(jiraUrl + '/browse/' + value.ticket)">
-                      <fa icon="external-link-square-alt"></fa>
-                    </span>
+                    <template v-if="activeAccount === 'accountOne'">
+                      <span v-on:click="open(accountOneJiraUrl + '/browse/' + value.ticket)">
+                        <fa icon="external-link-square-alt"></fa>
+                      </span>
+                    </template>
+                    <template v-if="activeAccount === 'accountTwo'">
+                      <span v-on:click="open(accountTwoJiraUrl + '/browse/' + value.ticket)">
+                        <fa icon="external-link-square-alt"></fa>
+                      </span>
+                    </template>
                   </router-link>&nbsp;
                   {{ value.ticket }}
                 </td>
@@ -72,21 +79,11 @@
 
 <script>
   import $ from 'jquery'
-  // import dateFns from 'date-fns'
+  import dateFns from 'date-fns'
 
   const Store = require('electron-store')
   const store = new Store()
   const axios = require('axios')
-  // const JiraClient = require('jira-connector')
-  //
-  // let base64 = btoa(store.get('jira-name') + ':' + store.get('jira-pass'))
-  //
-  // let jira = new JiraClient({
-  //   host: 'brixcrm.atlassian.net',
-  //   basic_auth: {
-  //     base64: base64
-  //   }
-  // })
 
   export default {
     name: 'timers',
@@ -99,7 +96,10 @@
         togglApiKey: store.get('togglApiKey'),
         ignoreProjectKey: store.get('ignoreProjectKey'),
         loggedTag: store.get('loggedTag'),
-        ignoreTag: store.get('ignoreTag')
+        ignoreTag: store.get('ignoreTag'),
+        activeAccount: store.get('activeAccount') ? store.get('activeAccount') : '',
+        accountOneJiraUrl: store.get('accountOneJiraUrl') ? store.get('accountOneJiraUrl') : '',
+        accountTwoJiraUrl: store.get('accountTwoJiraUrl') ? store.get('accountTwoJiraUrl') : ''
       }
     },
     mounted () {
@@ -119,7 +119,7 @@
     methods: {
       // Opens an external url.
       open (link) {
-        this.$electron.shell.openExternal(link)
+        this.$electron.shell.openExternal('https://' + link)
       },
       // Get the worklogs through the Toggl API.
       getTogglData: function () {
@@ -186,43 +186,101 @@
           }
         }
       },
-      logEntry (value) {
-        // Show spinner.
-        $('#spinner').fadeIn()
+      // This logs an entry to the corresponding ticket.
+      logEntry: function (value) {
+        let logEntry = this
+        // Get values from ticket.
+        let ticket = value.ticket
+        let description = value.description
+        let started = dateFns.format(value.start, 'YYYY-MM-DDTHH:mm:ss.SSSZZ')
+        // Jira can only handle worklogs of a minute or more.
+        let duration = value.duration >= 60 ? value.duration : 60
 
-        // let logEntry = this
-        // // Get values from ticket.
-        // let ticket = value.ticket
-        // let description = value.description
-        // let started = dateFns.format(value.start, 'YYYY-MM-DDTHH:mm:ss.SSSZZ')
-        // // Jira can only handle worklogs of a minute or more.
-        // let duration = value.duration >= 60 ? value.duration : 60
-        //
-        // // Update button visuals.
-        // document.getElementById('logEntry').setAttribute('disabled', true)
-        // document.getElementById('logEntry').classList.remove('is-success')
-        // document.getElementById('logEntry').classList.add('is-loading')
-        // document.getElementById('logEntry').classList.add('is-warning')
-        // // Prepare the JSON data.
-        // let data = JSON.stringify({
-        //   'comment': description,
-        //   'started': started,
-        //   'timeSpentSeconds': duration
-        // })
-        //
-        // // Log the entry.
-        // jira.issue.addWorkLog({
-        //
-        // })
-        //
-        // jira.issue.getIssue({
-        //   issueKey: 'BEN-25745'
-        // }).then(function (response) {
-        //   console.log(response)
-        //   $('#spinner').fadeOut()
-        // }).catch(function (error) {
-        //   console.log(error)
-        // })
+        // Update button visuals.
+        document.getElementById('logEntry').setAttribute('disabled', true)
+        document.getElementById('logEntry').classList.remove('is-success')
+        document.getElementById('logEntry').classList.add('is-loading')
+        document.getElementById('logEntry').classList.add('is-warning')
+        // Prepare the JSON data.
+        let data = JSON.stringify({
+          'comment': description,
+          'started': started,
+          'timeSpentSeconds': duration
+        })
+        // Post it to the endpoint.
+        axios.post('https://' + logEntry.getUrl(this.activeAccount) + '/rest/api/2/issue/' + ticket + '/worklog', data,
+          {
+            withCredentials: true,
+            xsrfCookieName: 'atlassian.xsrf.token',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(function (response) {
+            console.log(response)
+            if (response.status === 201) {
+              // Our ticket has been updated, update Toggl
+              // with the loggedTag.
+              logEntry.updateTogglTimeEntry(value)
+            }
+          })
+          .catch(function (error) {
+            console.log('Error: ' + error)
+          })
+      },
+      getUrl (activeAccount) {
+        let url = null
+        if (activeAccount === 'accountOne') {
+          url = this.accountOneJiraUrl
+        } else {
+          url = this.accountTwoJiraUrl
+        }
+        return url
+      },
+      updateTogglTimeEntry: function (entry) {
+        var togglTimers = this
+        // Add the label so we know its now logged.
+        if (entry['tags'] === undefined) {
+          entry['tags'] = [this.loggedTag]
+        } else {
+          entry['tags'].push(this.loggedTag)
+        }
+        // Prepare the JSON.
+        let timeEntry = JSON.stringify({
+          'time_entry': {
+            'description': entry['originalDescription'],
+            'tags': entry['tags'],
+            'duration': entry['duration'],
+            'start': entry['start'],
+            'stop': entry['stop'],
+            'duronly': entry['duronly'],
+            'pid': entry['pid'],
+            'billable': entry['billable']
+          }
+        })
+        // Update the ticket.
+        axios.put('https://www.toggl.com/api/v8/time_entries/' + entry.id, timeEntry, {
+          headers: {
+            'Authorization': 'Basic ' + btoa(this.togglApiKey + ':api_token'),
+            'Content-Type': 'application/json'
+          }
+        }).then(function (response) {
+          console.log(response)
+          if (response.status === 200) {
+            // Update button visuals.
+            document.getElementById('logEntry').classList.add('is-success')
+            document.getElementById('logEntry').classList.remove('is-loading')
+            document.getElementById('logEntry').classList.remove('is-warning')
+            document.getElementById('logEntry').removeAttribute('disabled')
+            // Remove the entry since we successfully logged it.
+            let index = togglTimers.untagged.indexOf(entry)
+            if (index > -1) {
+              togglTimers.untagged.splice(index, 1)
+            }
+          }
+        }).catch(function (error) {
+          console.log('Error: ' + error)
+        })
       },
       ignoreEntry: function (entry) {
         let togglTimers = this
@@ -251,34 +309,30 @@
             'billable': entry['billable']
           }
         })
-        console.log(timeEntry)
         // Update the ticket.
-        axios.put('https://www.toggl.com/api/v8/time_entries/' + entry.id, timeEntry,
-          {
-            headers: {
-              'Authorization': 'Basic ' + btoa(this.togglApiKey + ':api_token'),
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(function (response) {
-            console.log(response)
-            if (response.status === 200) {
-              // Update button visuals.
-              $('#spinner').fadeOut()
-              document.getElementById('ignoreEntry').classList.remove('is-loading')
-              document.getElementById('ignoreEntry').classList.remove('is-warning')
-              document.getElementById('ignoreEntry').removeAttribute('disabled')
-              // Remove the entry since we successfully logged it.
-              var index = togglTimers.untagged.indexOf(entry)
-              if (index > -1) {
-                togglTimers.untagged.splice(index, 1)
-              }
-            }
-          })
-          .catch(function (error) {
+        axios.put('https://www.toggl.com/api/v8/time_entries/' + entry.id, timeEntry, {
+          headers: {
+            'Authorization': 'Basic ' + btoa(this.togglApiKey + ':api_token'),
+            'Content-Type': 'application/json'
+          }
+        }).then(function (response) {
+          console.log(response)
+          if (response.status === 200) {
+            // Update button visuals.
             $('#spinner').fadeOut()
-            console.log('Error: ' + error)
-          })
+            document.getElementById('ignoreEntry').classList.remove('is-loading')
+            document.getElementById('ignoreEntry').classList.remove('is-warning')
+            document.getElementById('ignoreEntry').removeAttribute('disabled')
+            // Remove the entry since we successfully logged it.
+            let index = togglTimers.untagged.indexOf(entry)
+            if (index > -1) {
+              togglTimers.untagged.splice(index, 1)
+            }
+          }
+        }).catch(function (error) {
+          $('#spinner').fadeOut()
+          console.log('Error: ' + error)
+        })
       }
     }
   }
