@@ -22,7 +22,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "toggl-to-jira",
+    "productName": "Toggl to Jira",
     "appId": "nl.frankgraave.toggl-to-jira",
     "directories": {
       "output": "build"
