@@ -104,6 +104,7 @@
       }
     },
     mounted () {
+      // TODO: Set interval on fetching data?! (with setting for every 5m/10m/15m)
       // Once the Timers.vue is mounted, get the data.
       this.untagged = []
       this.getTogglData()
