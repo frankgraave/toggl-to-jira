@@ -22,7 +22,7 @@
               <div class="control">
                 <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" disabled>
               </div>
-              <p class="help"><em>Note: this account is being used for the REST API calls. Adjust the active account in the <router-link to="/accounts">Accounts</router-link> settings page.</em></p>
+              <p class="help"><em>Adjust the active account in the <router-link to="/accounts">Accounts</router-link> settings page.</em></p>
             </div>
             <!--Column 1: Field 2-->
             <div class="field">
