@@ -9,6 +9,7 @@ import timeTo from 'hh-mm-ss'
 import dateFns from 'date-fns'
 // Bulma.
 import 'bulma/css/bulma.css'
+import 'bulma-checkradio'
 // FontAwesome.
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'

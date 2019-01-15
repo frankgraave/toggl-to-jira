@@ -18,15 +18,12 @@
         <div class="columns">
           <div class="column is-6">
             <label class="label">Choose account</label>
-            <div class="control">
-              <label class="radio">
-                <input type="radio" name="answer">
-                {{ jiraUrl }}
-              </label><br/>
-              <label class="radio">
-                <input type="radio" name="answer">
-                n/a
-              </label>
+            <div class="field">
+              <input class="is-checkradio" id="exampleRadioInline1" type="radio" name="exampleRadioInline" checked="checked">
+              <label for="exampleRadioInline1">{{ jiraUrl }}</label>
+              <br>
+              <input class="is-checkradio" id="exampleRadioInline2" type="radio" name="exampleRadioInline">
+              <label for="exampleRadioInline2">Option 2</label>
             </div>
           </div> <!-- End of first column -->
 
