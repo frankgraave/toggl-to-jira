@@ -23,11 +23,21 @@
                 <div class="field has-addons">
                   <p class="control">
                     <a class="button is-dark" disabled>
-                      {{ activeAccount }}
+                      <template v-if="activeAccount === 'accountOne'">
+                        {{ accountOneName }}
+                      </template>
+                      <template v-else>
+                        {{ accountTwoName }}
+                      </template>
                     </a>
                   </p>
                   <p class="control is-expanded">
-                    <input class="input" type="text" ref="jiraUrl" v-model="jiraUrl" placeholder="jira.website.com" disabled>
+                    <template v-if="activeAccount === 'accountOne'">
+                      <input class="input" type="text" v-model="accountOneJiraUrl" placeholder="jira.atlassian.com" disabled>
+                    </template>
+                    <template v-else>
+                      <input class="input" type="text" v-model="accountTwoJiraUrl" placeholder="jira.atlassian.com" disabled>
+                    </template>
                   </p>
                 </div>
               </div>
@@ -112,12 +122,15 @@
     data () {
       return {
         // TODO: Set interval setting for every 5m/10m/15m.
+        accountOneName: store.get('accountOneName') ? store.get('accountOneName') : '',
+        accountTwoName: store.get('accountTwoName') ? store.get('accountTwoName') : '',
+        accountOneJiraUrl: store.get('accountOneJiraUrl') ? store.get('accountOneJiraUrl') : '',
+        accountTwoJiraUrl: store.get('accountTwoJiraUrl') ? store.get('accountTwoJiraUrl') : '',
         activeAccount: store.get('activeAccount'),
         ignoreProjectKey: store.get('ignoreProjectKey'),
         togglApiKey: store.get('togglApiKey'),
         loggedTag: store.get('loggedTag'),
-        ignoreTag: store.get('ignoreTag'),
-        jiraUrl: store.get('jiraUrl')
+        ignoreTag: store.get('ignoreTag')
       }
     },
     methods: {

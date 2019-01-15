@@ -124,7 +124,7 @@
     color: #999999;
   }
   .navbar-item a:hover {
-    color: #00adb5;
+    color: #68d2b0;
   }
   #app {
     position: relative;
@@ -160,7 +160,7 @@
   }
   aside ul li a.button:hover {
     background-color: #13171c !important;
-    color: #00adb5 !important;
+    color: #68d2b0 !important;
     outline: unset;
     border: unset;
   }
@@ -194,21 +194,21 @@
     left: 0%;
     top: 0%;
     animation: orbit-spinner-orbit-one-animation 1300ms linear infinite;
-    border-bottom: 3px solid #00adb5;
+    border-bottom: 3px solid #68d2b0;
   }
 
   .orbit-spinner .orbit:nth-child(2) {
     right: 0%;
     top: 0%;
     animation: orbit-spinner-orbit-two-animation 1300ms linear infinite;
-    border-right: 3px solid #00adb5;
+    border-right: 3px solid #68d2b0;
   }
 
   .orbit-spinner .orbit:nth-child(3) {
     right: 0%;
     bottom: 0%;
     animation: orbit-spinner-orbit-three-animation 1300ms linear infinite;
-    border-top: 3px solid #00adb5;
+    border-top: 3px solid #68d2b0;
   }
 
   @keyframes orbit-spinner-orbit-one-animation {

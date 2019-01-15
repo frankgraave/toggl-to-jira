@@ -56,7 +56,7 @@
               <td>
                 <!--If there's an unknown ticket, provide the ignore option-->
                 <template v-if="value.ticket !== 'Unknown Ticket!'">
-                  <span id="logEntry" class="button is-success is-small" v-on:click="logEntry(value)"><fa :icon="['fas', 'arrow-right']" /></span>
+                  <span id="logEntry" class="button is-primary is-small" v-on:click="logEntry(value)"><fa :icon="['fas', 'arrow-right']" /></span>
                 </template>
                 <template v-else>
                   <span id="ignoreEntry" class="button is-warning is-small" v-on:click="ignoreEntry(value)"><fa :icon="['fas', 'archive']" /></span>
@@ -99,8 +99,7 @@
         togglApiKey: store.get('togglApiKey'),
         ignoreProjectKey: store.get('ignoreProjectKey'),
         loggedTag: store.get('loggedTag'),
-        ignoreTag: store.get('ignoreTag'),
-        jiraUrl: store.get('jiraUrl')
+        ignoreTag: store.get('ignoreTag')
       }
     },
     mounted () {
@@ -302,7 +301,7 @@
     color: #999999;
   }
   .table td a:hover {
-    color: #00adb5;
+    color: #68d2b0;
   }
   span.unknown-ticket strong {
     color: #ff3860;
