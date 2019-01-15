@@ -18,12 +18,22 @@
           <div class="column is-5">
             <!--Column 1 - Field 1-->
             <div class="field">
-              <label class="label">Current used Account</label>
-              <div class="control">
-                <input class="input" type="text" ref="jiraUrl" v-bind:value="jiraUrl" disabled>
+              <label class="label">Current active Jira URL</label>
+              <div class="field-body">
+                <div class="field has-addons">
+                  <p class="control">
+                    <a class="button is-dark" disabled>
+                      https://
+                    </a>
+                  </p>
+                  <p class="control is-expanded">
+                    <input class="input" type="text" ref="jiraUrl" v-model="jiraUrl" placeholder="jira.website.com" disabled>
+                  </p>
+                </div>
               </div>
-              <p class="help"><em>Adjust the active account in the <router-link to="/accounts">Accounts</router-link> settings page.</em></p>
+              <p class="help"><em>Adjust the active account in the <router-link to="/accounts-overview">Accounts Overview</router-link> page.</em></p>
             </div>
+
             <!--Column 1: Field 2-->
             <div class="field">
               <div class="label">Ignore this project</div>
@@ -37,7 +47,7 @@
                       </span>
                     </p>
                     <p class="control">
-                      <a class="button is-static">-XXXXX</a>
+                      <a class="button is-dark" disabled>-XXXXX</a>
                     </p>
                   </div>
                   <p class="help"><em>Note: Case sensitive. This project will be filtered out of the list of tickets that can be synced.</em></p>

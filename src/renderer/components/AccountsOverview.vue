@@ -17,14 +17,16 @@
 
         <div class="columns">
           <div class="column is-6">
+
             <label class="label">Choose account</label>
             <div class="field">
               <input class="is-checkradio" id="exampleRadioInline1" type="radio" name="exampleRadioInline" checked="checked">
-              <label for="exampleRadioInline1">{{ jiraUrl }}</label>
+              <label for="exampleRadioInline1">{{ accountOneName }}</label>
               <br>
               <input class="is-checkradio" id="exampleRadioInline2" type="radio" name="exampleRadioInline">
               <label for="exampleRadioInline2">Option 2</label>
             </div>
+
           </div> <!-- End of first column -->
 
           <div class="column is-5">
@@ -44,6 +46,7 @@
     name: 'accounts-overview',
     data () {
       return {
+        accountOneName: store.get('accountOneName') ? store.get('accountOneName') : '',
         jiraUrl: store.get('jiraUrl') ? store.get('jiraUrl') : '',
         jiraName: store.get('jiraName') ? store.get('jiraName') : '',
         jiraPass: store.get('jiraPass') ? store.get('jiraPass') : '',
