@@ -21,10 +21,10 @@
             <label class="label">Choose account</label>
             <!--Build check if any account is set anyway-->
             <div class="field">
-              <input class="is-checkradio" id="accountOne" type="radio" v-bind:value="accountOneName" v-model="activeAccount" checked="checked">
+              <input class="is-checkradio" id="accountOne" type="radio" v-bind:value="accountOneName" v-model="activeAccount" v-on:change="saveActiveAccount(accountOneName)">
               <label for="accountOne">{{ accountOneName }} <em>({{ jiraUrlOne }})</em></label>
               <br>
-              <input class="is-checkradio" id="accountTwo" type="radio" v-bind:value="accountTwoName" v-model="activeAccount">
+              <input class="is-checkradio" id="accountTwo" type="radio" v-bind:value="accountTwoName" v-model="activeAccount" v-on:change="saveActiveAccount(accountTwoName)">
               <label for="accountTwo">{{ accountTwoName }} <em>({{ jiraUrlTwo }})</em></label>
             </div>
 
@@ -49,7 +49,7 @@
       return {
         accountOneName: store.get('accountOneName') ? store.get('accountOneName') : '',
         accountTwoName: store.get('accountTwoName') ? store.get('accountTwoName') : '',
-        activeAccount: '',
+        activeAccount: store.get('activeAccount') ? store.get('activeAccount') : '',
         jiraUrlOne: store.get('jiraUrlOne') ? store.get('jiraUrlOne') : '',
         jiraUrlTwo: store.get('jiraUrlTwo') ? store.get('jiraUrlTwo') : '',
         jiraName: store.get('jiraName') ? store.get('jiraName') : '',
@@ -60,6 +60,9 @@
     mounted () {
     },
     methods: {
+      saveActiveAccount (value) {
+        store.set('activeAccount', value)
+      }
     }
   }
 </script>
