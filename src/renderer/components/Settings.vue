@@ -18,12 +18,12 @@
           <div class="column is-5">
             <!--Column 1 - Field 1-->
             <div class="field">
-              <label class="label">Current active Jira URL</label>
+              <label class="label">Current active account</label>
               <div class="field-body">
                 <div class="field has-addons">
                   <p class="control">
                     <a class="button is-dark" disabled>
-                      https://
+                      {{ activeAccount }}
                     </a>
                   </p>
                   <p class="control is-expanded">
@@ -112,6 +112,7 @@
     data () {
       return {
         // TODO: Set interval setting for every 5m/10m/15m.
+        activeAccount: store.get('activeAccount'),
         ignoreProjectKey: store.get('ignoreProjectKey'),
         togglApiKey: store.get('togglApiKey'),
         loggedTag: store.get('loggedTag'),
