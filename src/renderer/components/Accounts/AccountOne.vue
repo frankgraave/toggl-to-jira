@@ -38,7 +38,7 @@
                                         </a>
                                     </p>
                                     <p class="control is-expanded">
-                                        <input class="input" type="text" ref="jiraUrl" v-model="jiraUrl" placeholder="jira.website.com">
+                                        <input class="input" type="text" ref="jiraUrlOne" v-model="jiraUrlOne" placeholder="jira.website.com">
                                     </p>
                                 </div>
                             </div>
@@ -133,7 +133,7 @@
     data () {
       return {
         accountOneName: store.get('accountOneName') ? store.get('accountOneName') : '',
-        jiraUrl: store.get('jiraUrl') ? store.get('jiraUrl') : '',
+        jiraUrlOne: store.get('jiraUrlOne') ? store.get('jiraUrlOne') : '',
         jiraName: store.get('jiraName') ? store.get('jiraName') : '',
         jiraPass: store.get('jiraPass') ? store.get('jiraPass') : '',
         togglApiKey: store.get('togglApiKey') ? store.get('togglApiKey') : ''
@@ -148,7 +148,7 @@
         document.getElementById('saveAccountData').setAttribute('disabled', true)
         // Only delete these, since we have other settings.
         store.get('accountOneName', '')
-        store.get('jiraUrl', '')
+        store.get('jiraUrlOne', '')
         store.set('jiraName', '')
         store.set('jiraPass', '')
         store.set('togglApiKey', '')
@@ -165,7 +165,7 @@
         document.getElementById('saveAccountData').setAttribute('disabled', true)
 
         store.set('accountOneName', this.$refs.accountOneName.value)
-        store.set('jiraUrl', this.$refs.jiraUrl.value)
+        store.set('jiraUrlOne', this.$refs.jiraUrlOne.value)
         store.set('jiraName', this.$refs.jiraName.value)
         store.set('jiraPass', this.$refs.jiraPass.value)
 
