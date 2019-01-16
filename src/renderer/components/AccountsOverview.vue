@@ -19,19 +19,26 @@
           <div class="column is-5">
 
             <label class="label">Choose account</label>
-            <!--Build check if any account is set anyway-->
-            <div class="field">
-              <input class="is-checkradio" id="accountOne" type="radio" value="accountOne" v-model="activeAccount" v-on:change="saveActiveAccount('accountOne')">
-              <label for="accountOne">
-                <a class="button is-light" type="button">{{ accountOneName }}</a>
-              </label>
-            </div>
-            <div class="field">
-              <input class="is-checkradio" id="accountTwo" type="radio" value="accountTwo" v-model="activeAccount" v-on:change="saveActiveAccount('accountTwo')">
-              <label for="accountTwo">
-                <a class="button is-light" type="button">{{ accountTwoName }}</a>
-              </label>
-            </div>
+            <template v-if="accountOneName">
+              <div class="field">
+                <input class="is-checkradio" id="accountOne" type="radio" value="accountOne" v-model="activeAccount" v-on:change="saveActiveAccount('accountOne')">
+                <label for="accountOne">
+                  <a class="button is-light" type="button">{{ accountOneName }}</a>
+                </label>
+              </div>
+            </template>
+            <template v-if="accountTwoName">
+              <div class="field">
+                <input class="is-checkradio" id="accountTwo" type="radio" value="accountTwo" v-model="activeAccount" v-on:change="saveActiveAccount('accountTwo')">
+                <label for="accountTwo">
+                  <a class="button is-light" type="button">{{ accountTwoName }}</a>
+                </label>
+              </div>
+            </template>
+
+            <template v-if="accountOneName === '' && accountTwoName === ''">
+              Set up your first account <router-link to="/accounts-overview/account-one">here</router-link>.
+            </template>
 
           </div> <!-- End of first column -->
 
@@ -86,6 +93,14 @@
   .is-checkradio[type=radio]+label {
     margin: 0;
     padding: .0rem .5rem .0rem 2rem;
+    outline: none;
+  }
+
+  .is-checkradio[type=checkbox]:focus+label::before,
+  .is-checkradio[type=checkbox]:focus+label:before,
+  .is-checkradio[type=radio]:focus+label::before,
+  .is-checkradio[type=radio]:focus+label:before {
+    outline: none;
   }
 
 </style>

@@ -21,7 +21,7 @@
             <div class="field">
               <label class="label">Account name</label>
               <div class="control has-icons-left">
-                <input class="input" type="text" ref="accountOneName" v-model="accountOneName" placeholder="e.g. Open Social">
+                <input class="input" type="text" ref="accountOneName" v-model="accountOneName" placeholder="e.g. GoalGorilla">
                 <span class="icon is-small is-left">
                   <fa :icon="['fas', 'folder']" />
                 </span>
@@ -38,7 +38,7 @@
                     </a>
                   </p>
                   <p class="control is-expanded">
-                    <input class="input" type="text" ref="accountOneJiraUrl" v-model="accountOneJiraUrl" placeholder="jira.atlassian.com">
+                    <input class="input" type="text" ref="accountOneJiraUrl" v-model="accountOneJiraUrl" placeholder="e.g. jira.atlassian.net">
                   </p>
                 </div>
               </div>

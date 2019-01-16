@@ -97,7 +97,7 @@ function appReady () {
 
   // Prevent people from opening devTools.
   mainWindow.window.webContents.on('devtools-opened', () => {
-    mainWindow.window.webContents.closeDevTools()
+    // mainWindow.window.webContents.closeDevTools()
   })
 
   mainWindow.tray.on('click', () => {

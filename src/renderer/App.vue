@@ -155,6 +155,7 @@
     color: #999999;
   }
   aside ul li a.button:visited,
+  aside ul li a.button:focus,
   aside ul li a.button:link {
     color: #999999;
   }
@@ -163,6 +164,13 @@
     color: #68d2b0 !important;
     outline: unset;
     border: unset;
+    box-shadow: none;
+  }
+  .button:focus:not(:active), .button.is-focused:not(:active) {
+    box-shadow: unset !important;
+  }
+  .button:focus {
+    box-shadow: unset !important;
   }
 
   #spinner {
