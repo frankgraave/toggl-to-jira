@@ -92,19 +92,19 @@ function appReady () {
   mainWindow.window.webContents.setUserAgent('xxx')
 
   // Disable/enable devTools.
-  mainWindow.window.webContents.openDevTools()
-  // mainWindow.window.webContents.closeDevTools()
+  // mainWindow.window.webContents.openDevTools()
+  mainWindow.window.webContents.closeDevTools()
 
   // Prevent people from opening devTools.
   mainWindow.window.webContents.on('devtools-opened', () => {
-    // mainWindow.window.webContents.closeDevTools()
+    mainWindow.window.webContents.closeDevTools()
   })
 
   mainWindow.tray.on('click', () => {
     mainWindow.window.focus()
   })
   mainWindow.tray.on('right-click', () => {
-    mainWindow.tray.popUpContextMenu(Menu.buildFromTemplate(template))
+    mainWindow.tray.popUpContextMenu(Menu.buildFromTemplate([application]))
   })
 
   mainWindow.on('closed', () => {
