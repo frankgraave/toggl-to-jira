@@ -138,7 +138,7 @@
             toggl.setEntryProperties(toggl.timeEntries)
           }).catch(function (error) {
             toggl.statusMessage = 'Something went wrong :('
-            console.log('Error: ' + error)
+            console.log('Error: ', error)
             $('#spinner').fadeOut()
           })
         }
