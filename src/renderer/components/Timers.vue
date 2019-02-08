@@ -80,6 +80,7 @@
 <script>
   import $ from 'jquery'
   import dateFns from 'date-fns'
+  import findValidProjectEntries from '../helpers/findValidProjectEntries'
 
   const Store = require('electron-store')
   const store = new Store()
@@ -146,45 +147,14 @@
       // Manipulate the data and only get what we need store it in
       // a new array so we can populate our table with those entries.
       setEntryProperties: function (data) {
-        // For global vars.
-        let togglTimers = this
-        // Go through the data.
-        for (const entries in data) {
-          // Store each timer.
-          let entry = data[entries]
-          // Skip running timers.
-          if (entry['duration'] < 0) {
-            continue
-          }
-          // Check for a match on the ticket.
-          let match = entry.description.match('([A-Z]{1,}-[0-9]{1,})')
-          // New iteration.
-          if (match && (this.ignoreProjectKey === '' || match[0].indexOf(this.ignoreProjectKey) === -1)) {
-            if (entry.hasOwnProperty('tags') && Object.values(entry.tags).includes(this.loggedTag)) {
-              togglTimers.tagged.push(entry)
-            } else {
-              // Add ticket number we matched.
-              entry['ticket'] = match[0]
-              entry['originalDescription'] = entry['description']
-              // Manipulate the description.
-              let desc = entry['description'].replace(match[0], '')
-              desc = desc.replace(/- /, '')
-              entry['description'] = desc
-              togglTimers.untagged.push(entry)
-            }
-          // If we can't match the ticket, check if it should be ignored.
-          } else if (!match) {
-            if (entry.hasOwnProperty('tags') && Object.values(entry.tags).includes(this.ignoreTag)) {
-              togglTimers.tagged.push(entry)
-            // No match? Don't ignore? Then it's an UFO ticket.
-            } else {
-              // No ticket number found.
-              entry['ticket'] = 'Unknown Ticket!'
-              entry['description'] = entry['description']
-              togglTimers.untagged.push(entry)
-            }
-          }
-        }
+        const [tagged, untagged] = findValidProjectEntries(
+          data,
+          this.ignoreProjectKey,
+          this.loggedTag,
+          this.ignoreTag
+        )
+        this.tagged = tagged
+        this.untagged = untagged
       },
       // This logs an entry to the corresponding ticket.
       logEntry: function (value) {
