@@ -205,7 +205,9 @@
         let data = JSON.stringify({
           'comment': description,
           'started': started,
-          'timeSpentSeconds': duration
+          'timeSpentSeconds': duration,
+          'adjustEstimate': 'new',
+          'newEstimate': '0h'
         })
         // Post it to the endpoint.
         axios.post('https://' + logEntry.getUrl(this.activeAccount) + '/rest/api/2/issue/' + ticket + '/worklog', data,

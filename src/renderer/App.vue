@@ -59,12 +59,17 @@
             <p class="navbar-item">
               <router-link to="/accounts-overview/account-one">
                 <span class="icon is-small"><i><fa icon="user"></fa></i></span>
-                <span v-on:click="">Account One</span>
+                <template v-if=!accountName>
+                  <span v-on:click="">Create Account</span>
+                </template>
+                <template v-else>
+                  <span v-on:click="">{{ accountName }}</span>
+                </template>
               </router-link>
-              <router-link to="/accounts-overview/account-two">
+              <!-- <router-link to="/accounts-overview/account-two">
                 <span class="icon is-small"><i><fa icon="user"></fa></i></span>
                 <span v-on:click="">Account Two</span>
-              </router-link>
+              </router-link> -->
             </p>
           </template>
 
@@ -86,11 +91,20 @@
 <script>
   import $ from 'jquery'
 
+  const Store = require('electron-store')
+  const store = new Store()
+
   // Hide our spinner by default.
   $('#spinner').hide()
 
   export default {
     name: 'toggl-to-jira',
+    data () {
+      return {
+        activeAccount: store.get('activeAccount') ? store.get('activeAccount') : '',
+        accountName: store.get('accountName') ? store.get('accountName') : ''
+      }
+    },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
