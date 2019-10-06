@@ -60,10 +60,10 @@
               <router-link to="/accounts-overview/account-one">
                 <span class="icon is-small"><i><fa icon="user"></fa></i></span>
                 <template v-if=!accountName>
-                  <span v-on:click="">Create Account</span>
+                  <span v-on:click="">Edit Account</span>
                 </template>
                 <template v-else>
-                  <span v-on:click="">{{ accountName }}</span>
+                  <span v-on:click="">Edit {{ accountName }}</span>
                 </template>
               </router-link>
               <!-- <router-link to="/accounts-overview/account-two">

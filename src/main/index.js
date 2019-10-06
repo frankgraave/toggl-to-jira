@@ -3,7 +3,7 @@
 // =============================================================================
 'use strict'
 
-import { app, Menu, ipcMain } from 'electron'
+import { app, Menu, ipcMain, BrowserWindow } from 'electron'
 
 const Path = require('path')
 const MenuBar = require('menubar')
@@ -20,16 +20,34 @@ if (process.env.NODE_ENV !== 'development') {
 // Declare vars and constants.
 // =============================================================================
 let mainWindow
+let prefWindow
 
 // The starting URL.
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+const prefWindowURL = process.env.NODE_ENV === 'development'
+  ? `http://localhost:9080`
+  : `file://${__dirname}/index.html`
+
 // =============================================================================
-// Function - Create BrowserWindow.
+// Function - Create the app windows.
 // =============================================================================
-function appReady () {
+function openPrefWindow () {
+  prefWindow = new BrowserWindow({
+    height: 575,
+    width: 875
+  })
+
+  prefWindow.loadURL(prefWindowURL)
+
+  prefWindow.on('closed', () => {
+    prefWindow = null
+  })
+}
+
+function openMainWindow () {
   // Initial window options.
   mainWindow = new MenuBar({
     height: 575,
@@ -47,7 +65,15 @@ function appReady () {
     icon: Path.join(__static, 'icons/iconTemplate.png')
   })
 
-  const application = {
+  const appPreferences = {
+    label: 'Preferences',
+    accelerator: 'Command+,',
+    click: () => {
+      openPrefWindow()
+    }
+  }
+
+  const appQuit = {
     label: 'Quit',
     accelerator: 'Command+Q',
     click: () => {
@@ -81,19 +107,24 @@ function appReady () {
     ]
   }
 
-  const template = [
-    application,
+  const primaryContextMenu = [
+    appPreferences,
+    appQuit
+  ]
+  const secundaryContextMenu = [
+    appPreferences,
+    appQuit,
     edit
   ]
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+  Menu.setApplicationMenu(Menu.buildFromTemplate(secundaryContextMenu))
 
   // Fix for making API calls to Jira REST Server API.
   mainWindow.window.webContents.setUserAgent('xxx')
 
   // Disable/enable devTools.
   // mainWindow.window.webContents.openDevTools()
-  mainWindow.window.webContents.closeDevTools()
+  // mainWindow.window.webContents.closeDevTools()
 
   // Prevent people from opening devTools.
   mainWindow.window.webContents.on('devtools-opened', () => {
@@ -104,7 +135,7 @@ function appReady () {
     mainWindow.window.focus()
   })
   mainWindow.tray.on('right-click', () => {
-    mainWindow.tray.popUpContextMenu(Menu.buildFromTemplate([application]))
+    mainWindow.tray.popUpContextMenu(Menu.buildFromTemplate(primaryContextMenu))
   })
 
   mainWindow.on('closed', () => {
@@ -115,10 +146,10 @@ function appReady () {
 // =============================================================================
 // App main.
 // =============================================================================
-// app.on('ready', appReady)
+// app.on('ready', mainWindow)
 
 app.on('ready', () => {
-  appReady()
+  openMainWindow()
 })
 
 app.on('window-all-closed', () => {
@@ -129,7 +160,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (mainWindow === null) {
-    appReady()
+    openMainWindow()
   }
 })
 

@@ -18,7 +18,7 @@
         <div class="columns">
           <div class="column is-5">
 
-            <label class="label">Account active?</label>
+            <label class="label">Select account</label>
             <template v-if="accountOneName">
               <div class="field">
                 <input class="is-checkradio" id="accountOne" type="radio" value="accountOne" v-model="activeAccount" v-on:change="saveActiveAccount('accountOne')">

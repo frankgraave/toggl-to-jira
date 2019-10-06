@@ -99,7 +99,13 @@
         ignoreTag: store.get('ignoreTag'),
         activeAccount: store.get('activeAccount') ? store.get('activeAccount') : '',
         accountOneJiraUrl: store.get('accountOneJiraUrl') ? store.get('accountOneJiraUrl') : '',
-        accountTwoJiraUrl: store.get('accountTwoJiraUrl') ? store.get('accountTwoJiraUrl') : ''
+        accountTwoJiraUrl: store.get('accountTwoJiraUrl') ? store.get('accountTwoJiraUrl') : '',
+        rojectBaseUrl: store.get('projectBaseUrl') ? store.get('projectBaseUrl') : '',
+        basicAuthToken: store.get('basicAuthToken') ? store.get('basicAuthToken') : '',
+        accountName: store.get('accountName') ? store.get('accountName') : '',
+        accountEmail: store.get('accountEmail') ? store.get('accountEmail') : '',
+        accountJiraUrl: store.get('accountJiraUrl') ? store.get('accountJiraUrl') : '',
+        accountAccessToken: store.get('accountAccessToken') ? store.get('accountAccessToken') : ''
       }
     },
     mounted () {
@@ -195,6 +201,13 @@
         let started = dateFns.format(value.start, 'YYYY-MM-DDTHH:mm:ss.SSSZZ')
         // Jira can only handle worklogs of a minute or more.
         let duration = value.duration >= 60 ? value.duration : 60
+        // Prepare credentials.
+        let basicAuthToken = btoa(this.accountEmail + ':' + this.accountAccessToken)
+        let headers = {
+          'Authorization': 'Basic ' + basicAuthToken,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
 
         // Update button visuals.
         document.getElementById('logEntry').setAttribute('disabled', true)
@@ -210,14 +223,8 @@
           'newEstimate': '0h'
         })
         // Post it to the endpoint.
-        axios.post('https://' + logEntry.getUrl(this.activeAccount) + '/rest/api/2/issue/' + ticket + '/worklog', data,
-          {
-            withCredentials: true,
-            xsrfCookieName: 'atlassian.xsrf.token',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
+        axios.post('https://' + logEntry.getUrl(this.accountJiraUrl) + '/rest/api/2/issue/' + ticket + '/worklog', data, {headers}
+        )
           .then(function (response) {
             console.log(response)
             if (response.status === 201) {
@@ -231,12 +238,8 @@
           })
       },
       getUrl (activeAccount) {
-        let url = null
-        if (activeAccount === 'accountOne') {
-          url = this.accountOneJiraUrl
-        } else {
-          url = this.accountTwoJiraUrl
-        }
+        let url = this.accountJiraUrl
+        // @todo: fix this method once we can create more accounts.
         return url
       },
       updateTogglTimeEntry: function (entry) {
